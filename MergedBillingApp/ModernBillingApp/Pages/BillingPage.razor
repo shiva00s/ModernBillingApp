@@ -1,0 +1,829 @@
+﻿@page "/billing"
+@inject CustomerService customerService
+@inject ProductService productService
+@inject BillingService billingService
+@inject BarcodeService barcodeService
+@inject IndianGSTService gstService
+@inject NavigationManager navManager
+@inject IJSRuntime jsRuntime
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using ModernBillingApp
+@using ModernBillingApp.Helpers
+@using ModernBillingApp.Services
+@implements IAsyncDisposable
+
+<PageTitle>Billing / POS</PageTitle>
+
+<div class="billing-header mb-2">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h3 class="mb-0"><span class="oi oi-cart me-2"></span>Billing / POS</h3>
+            <small class="text-white-50">Bill No: <strong>@formModel.BillData.BillNo</strong></small>
+        </div>
+        <div class="keyboard-shortcuts-hint">
+            <button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="left" title="Keyboard Shortcuts">
+                <span class="oi oi-keyboard me-1"></span>Shortcuts
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="keyboard-shortcuts-info alert alert-info alert-dismissible fade" role="alert" id="shortcutsInfo">
+    <strong>Keyboard Shortcuts:</strong><br/>
+    <kbd>F1</kbd> - Focus Product | <kbd>F2</kbd> - Focus Customer | <kbd>Ctrl+S</kbd> - Save Bill | <kbd>Esc</kbd> - Clear Focus
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<div class="row g-2">
+    <div class="col-lg-8 col-md-7">
+
+        <div class="card shadow-sm mb-2 compact-card">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0"><span class="oi oi-people me-2"></span>Customer</h6>
+            </div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="form-label">Search Customer (Name) <kbd class="small">F2</kbd></label>
+                        <InputText @bind-value="customerSearchName" 
+                                   class="form-control" 
+                                   @oninput="SearchCustomerByName" 
+                                   placeholder="Type name to search..." 
+                                   id="customerNameSearch" />
+                        @if (!string.IsNullOrEmpty(customerSearchName) && customerList.Any(c => c.CName?.Contains(customerSearchName, StringComparison.OrdinalIgnoreCase) == true))
+                        {
+                            <div class="list-group mt-2" style="position: absolute; z-index: 1000; max-height: 200px; overflow-y: auto;">
+                                @foreach (var cust in customerList.Where(c => c.CName?.Contains(customerSearchName, StringComparison.OrdinalIgnoreCase) == true).Take(5))
+                                {
+                                    <button type="button" class="list-group-item list-group-item-action" @onclick="() => SelectCustomer(cust)">
+                                        <strong>@cust.CName</strong><br/>
+                                        <small class="text-muted">@cust.CContact</small>
+                                    </button>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Search Customer (Contact)</label>
+                        <InputText @bind-value="customerSearchContact" 
+                                   class="form-control" 
+                                   @oninput="SearchCustomerByContact" 
+                                   placeholder="Type contact to search..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">&nbsp;</label>
+                        <div>
+                            <button class="btn btn-secondary w-100" @onclick="ClearCustomer">
+                                <span class="oi oi-x me-1"></span>Clear Customer
+                            </button>
+                        </div>
+                    </div>
+                    @if (formModel.BillData.CustomerId.HasValue)
+                    {
+                        <div class="col-12">
+                            <div class="alert alert-success mb-0">
+                                <strong>Selected:</strong> @formModel.BillData.CName 
+                                @if (!string.IsNullOrEmpty(formModel.BillData.CContact))
+                                {
+                                    <span class="text-muted">| @formModel.BillData.CContact</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-2 compact-card">
+            <div class="card-header bg-success text-white">
+                <h6 class="mb-0"><span class="oi oi-plus me-2"></span>Add Product</h6>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@cartItemModel" OnValidSubmit="HandleAddItemToCart">
+                    <DataAnnotationsValidator />
+                    <div class="row g-2">
+                        <div class="col-md-5">
+                            <label class="form-label">Product <kbd class="small">F1</kbd> / Barcode</label>
+                            <div class="d-flex gap-2">
+                                <InputText @bind-value="barcodeInput" 
+                                          class="form-control form-control-sm" 
+                                          placeholder="Scan barcode..." 
+                                          @onkeypress="HandleBarcodeKeyPress"
+                                          style="max-width: 150px;" />
+                                <InputSelect @bind-value="cartItemModel.SelectedProductId" 
+                                             class="form-select form-select-sm" 
+                                             @oninput="OnProductSelected"
+                                             id="productSelect">
+                                    <option value="0">-- Select Product --</option>
+                                    @if (productList != null)
+                                    {
+                                        @foreach (var p in productList.Where(x => x.CurrentStock > 0).OrderBy(x => x.PName))
+                                        {
+                                            <option value="@p.Id">@p.PName (@p.PID) [@p.CurrentStock] - ₹@p.SPrice.ToString("N2")</option>
+                                        }
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Price</label>
+                            <InputNumber @bind-value="cartItemModel.SPrice" class="form-control form-control-lg" disabled />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Quantity</label>
+                            <InputNumber @bind-value="cartItemModel.PQty" class="form-control form-control-lg" min="0.01" step="0.01" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">&nbsp;</label>
+                            <div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <span class="oi oi-plus me-1"></span>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><span class="oi oi-cart me-2"></span>Current Bill</h5>
+                <span class="badge bg-light text-dark">@cart.Count item(s)</span>
+            </div>
+            @if (!cart.Any())
+            {
+                <div class="card-body text-center py-5">
+                    <span class="oi oi-cart display-1 text-muted"></span>
+                    <p class="text-muted mt-3">Cart is empty. Add products to get started.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th class="text-end">Price</th>
+                                <th class="text-end">Qty</th>
+                                <th class="text-end">GST</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int index = 1;
+                            }
+                            @foreach (var item in cart)
+                            {
+                                <tr>
+                                    <td>@index</td>
+                                    <td>
+                                        <strong>@item.PName</strong><br/>
+                                        <small class="text-muted">@item.PID</small>
+                                    </td>
+                                    <td class="text-end">@IndianCurrencyHelper.FormatRupees(item.SPrice)</td>
+                                    <td class="text-end">@item.PQty</td>
+                                    <td class="text-end">@item.Gst.ToString("F2")%</td>
+                                    <td class="text-end"><strong>@IndianCurrencyHelper.FormatRupees(item.Total)</strong></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => RemoveItemFromCart(item)" title="Remove item">
+                                            <span class="oi oi-trash"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                index++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-2 compact-card border-primary">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-0"><span class="oi oi-calculator me-2"></span>Bill Summary</h6>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-1">
+                    <span class="small">Subtotal:</span>
+                    <strong class="small">@IndianCurrencyHelper.FormatRupees(cartTotal)</strong>
+                </div>
+                @if (formModel.BillData.IsInterState)
+                {
+                    <div class="d-flex justify-content-between mb-1 text-muted">
+                        <span class="small">IGST:</span>
+                        <span class="small">@IndianCurrencyHelper.FormatRupees(formModel.BillData.IGSTAmount)</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="d-flex justify-content-between mb-1 text-muted">
+                        <span class="small">CGST:</span>
+                        <span class="small">@IndianCurrencyHelper.FormatRupees(formModel.BillData.CGSTAmount)</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1 text-muted">
+                        <span class="small">SGST:</span>
+                        <span class="small">@IndianCurrencyHelper.FormatRupees(formModel.BillData.SGSTAmount)</span>
+                    </div>
+                }
+                <div class="d-flex justify-content-between mb-1 text-muted">
+                    <span class="small">Total GST:</span>
+                    <span class="small">@IndianCurrencyHelper.FormatRupees(cartGst)</span>
+                </div>
+                <hr class="my-2" />
+                <div class="d-flex justify-content-between mb-0">
+                    <span class="h6 mb-0">Grand Total:</span>
+                    <strong class="h5 mb-0 text-primary">@IndianCurrencyHelper.FormatRupees(cartGrandTotal)</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm compact-card">
+            <div class="card-body">
+                <EditForm Model="@formModel" OnValidSubmit="HandleSaveBill">
+                    <DataAnnotationsValidator />
+                    <div class="mb-2">
+                        <label>Customer</label>
+                        <InputText @bind-value="formModel.BillData.CName" class="form-control" placeholder="Walk-in Customer" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Payment Mode</label>
+                        <InputSelect @bind-value="formModel.BillData.PaymentMode" class="form-select form-select-sm" @onchange="OnPaymentModeChanged">
+                            <option value="Cash">Cash</option>
+                            <option value="Card">Card</option>
+                            <option value="UPI">UPI</option>
+                            <option value="NEFT">NEFT</option>
+                            <option value="Credit">Credit</option>
+                        </InputSelect>
+                    </div>
+                    @if (formModel.BillData.PaymentMode == "UPI")
+                    {
+                        <div class="mb-2">
+                            <label class="form-label small">UPI Reference</label>
+                            <InputText @bind-value="formModel.BillData.UPIReference" class="form-control form-control-sm" placeholder="UPI Transaction ID" />
+                        </div>
+                    }
+                    <div class="mb-2">
+                        <label class="form-label small">Amount Paid</label>
+                        <InputNumber @bind-value="formModel.PayAmt" class="form-control form-control-sm" @oninput="CalculateBalance" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Balance Due</label>
+                        <InputNumber @bind-value="formModel.BillData.BalAmt" class="form-control form-control-sm" disabled />
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="form-label">Print Format</label>
+                        <InputRadioGroup @bind-value="formModel.PrintFormat">
+                            <div class="form-check">
+                                <InputRadio id="print3inch" Value="@("3inch")" class="form-check-input" />
+                                <label class="form-check-label" for="print3inch">3-inch Thermal Receipt</label>
+                            </div>
+                            <div class="form-check">
+                                <InputRadio id="printA5" Value="@("A5")" class="form-check-input" />
+                                <label class="form-check-label" for="printA5">A5 Invoice</label>
+                            </div>
+                            <div class="form-check">
+                                <InputRadio id="printA4" Value="@("A4")" class="form-check-input" />
+                                <label class="form-check-label" for="printA4">A4 Invoice</label>
+                            </div>
+                        </InputRadioGroup>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger">@errorMessage</div>
+                    }
+                    @if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        <div class="alert alert-success">@successMessage</div>
+                    }
+
+                    <div class="d-grid gap-1">
+                        <button type="submit" class="btn btn-success btn-sm" disabled="@(isSaving || !cart.Any())">
+                            @if (isSaving)
+                            {
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <span>Saving...</span>
+                            }
+                            else
+                            {
+                                <span class="oi oi-check me-2"></span>
+                                <span>SAVE & PRINT BILL <kbd class="small">Ctrl+S</kbd></span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+                <hr class="my-2" />
+                <div class="row g-1">
+                    <div class="col">
+                        <button class="btn btn-outline-secondary btn-sm w-100" @onclick="HoldBill">Hold (@heldCarts.Count)</button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-outline-secondary btn-sm w-100" @onclick="RestoreBill" disabled="@(heldCarts.Count == 0)">Restore</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .billing-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 0.75rem 1.25rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .billing-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+        animation: rotate 15s linear infinite;
+    }
+
+    @@keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .billing-header h3 {
+        color: white;
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.25rem;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+    }
+
+    kbd {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+        color: white;
+        display: inline-block;
+        font-family: 'Inter', monospace;
+        font-size: 0.75em;
+        font-weight: 600;
+        line-height: 1.4;
+        padding: 0.2em 0.5em;
+        white-space: nowrap;
+    }
+
+    .keyboard-shortcuts-info {
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        z-index: 1050;
+        max-width: 400px;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+    }
+
+    .table-responsive {
+        max-height: calc(100vh - 550px);
+        min-height: 150px;
+        overflow-y: auto;
+        border-radius: 12px;
+    }
+    
+    .compact-card .card-body {
+        padding: 0.75rem 1rem;
+    }
+    
+    .compact-card .card-header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
+</style>
+
+@code {
+    // --- Data Lists ---
+    private List<Customer> customerList = new List<Customer>();
+    private List<Product> productList = new List<Product>();
+    private List<CartItem> cart = new List<CartItem>();
+
+    // --- Totals ---
+    private decimal cartTotal = 0;
+    private decimal cartGst = 0;
+    private decimal cartGrandTotal = 0;
+
+    // This now holds all the form data, including the print format
+    private BillSaveModel formModel = new BillSaveModel();
+
+    // Helper class for the form
+    public class BillSaveModel
+    {
+        public Bill BillData { get; set; } = new Bill() { PaymentMode = "Cash" };
+        public string PrintFormat { get; set; } = "3inch"; // Default to 3inch
+        public decimal PayAmt { get; set; }
+    }
+
+    // --- Form Models ---
+    private CartItemEntryModel cartItemModel = new CartItemEntryModel();
+    private string customerSearchName = "";
+    private string customerSearchContact = "";
+    private string errorMessage = "";
+    private string successMessage = "";
+    private bool isSaving = false;
+    private DotNetObjectReference<BillingPage>? objRef;
+
+    // --- Hold Bill (Future Improvement) ---
+    private static List<List<CartItem>> heldCarts = new List<List<CartItem>>();
+
+    // Helper class for the Add Item form
+    public class CartItemEntryModel
+    {
+        public int SelectedProductId { get; set; }
+        public decimal SPrice { get; set; }
+        public double PQty { get; set; } = 1;
+    }
+
+    // Helper class for the items in the cart
+    public class CartItem
+    {
+        public int ProductId { get; set; }
+        public string? PID { get; set; }
+        public string? PName { get; set; }
+        public string? HSN { get; set; }
+        public double PQty { get; set; }
+        public decimal SPrice { get; set; }
+        public decimal PPrice { get; set; } // Purchase Price (for profit)
+        public decimal Gst { get; set; }
+        public decimal GstAmount { get; set; }
+        public decimal Total { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        productList = await productService.GetProducts();
+        customerList = await customerService.GetCustomers();
+        formModel.BillData.BillNo = await billingService.GetNextBillNo();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            objRef = DotNetObjectReference.Create(this);
+            await jsRuntime.InvokeVoidAsync("eval", @"
+                document.addEventListener('keydown', function(e) {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's' && 
+                        (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA')) {
+                        e.preventDefault();
+                        const submitBtn = document.querySelector('button[type=""submit""]');
+                        if (submitBtn && !submitBtn.disabled) submitBtn.click();
+                    }
+                    if (e.key === 'F1' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                        e.preventDefault();
+                        document.getElementById('productSelect')?.focus();
+                    }
+                    if (e.key === 'F2' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                        e.preventDefault();
+                        document.getElementById('customerNameSearch')?.focus();
+                    }
+                });
+            ");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        objRef?.Dispose();
+    }
+
+    // === Customer Search Logic ===
+    private void SearchCustomerByName(ChangeEventArgs e)
+    {
+        customerSearchName = e.Value?.ToString() ?? "";
+        if (!string.IsNullOrEmpty(customerSearchName))
+        {
+            var found = customerList.FirstOrDefault(c => c.CName != null && c.CName.StartsWith(customerSearchName, StringComparison.OrdinalIgnoreCase));
+            if (found != null) SelectCustomer(found);
+        }
+    }
+
+    private void SearchCustomerByContact(ChangeEventArgs e)
+    {
+        customerSearchContact = e.Value?.ToString() ?? "";
+        if (!string.IsNullOrEmpty(customerSearchContact))
+        {
+            var found = customerList.FirstOrDefault(c => c.CContact != null && c.CContact.StartsWith(customerSearchContact, StringComparison.OrdinalIgnoreCase));
+            if (found != null) SelectCustomer(found);
+        }
+    }
+
+    private void SelectCustomer(Customer cust)
+    {
+        formModel.BillData.CustomerId = cust.Id;
+        formModel.BillData.CName = cust.CName;
+        formModel.BillData.CContact = cust.CContact;
+        customerSearchName = cust.CName ?? "";
+        customerSearchContact = cust.CContact ?? "";
+    }
+
+    private void ClearCustomer()
+    {
+        formModel.BillData.CustomerId = null;
+        formModel.BillData.CName = "";
+        formModel.BillData.CContact = "";
+        customerSearchName = "";
+        customerSearchContact = "";
+    }
+
+    // === Add to Cart Logic ===
+    private void OnProductSelected(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int productId) && productId > 0)
+        {
+            var product = productList.FirstOrDefault(p => p.Id == productId);
+            if (product != null)
+            {
+                cartItemModel.SelectedProductId = product.Id;
+                cartItemModel.SPrice = product.SPrice;
+            }
+        }
+    }
+
+    private void HandleAddItemToCart()
+    {
+        if (cartItemModel.SelectedProductId == 0) return;
+
+        var product = productList.FirstOrDefault(p => p.Id == cartItemModel.SelectedProductId);
+        if (product == null) return;
+
+        // --- Improvement: Check stock level ---
+        if (cartItemModel.PQty > product.CurrentStock)
+        {
+            errorMessage = $"Not enough stock for {product.PName}. Only {product.CurrentStock} available.";
+            return;
+        }
+
+        // Check if item is already in cart
+        var existingItem = cart.FirstOrDefault(item => item.ProductId == product.Id);
+        if (existingItem != null)
+        {
+            existingItem.PQty += cartItemModel.PQty;
+        }
+        else
+        {
+            cart.Add(new CartItem
+            {
+                ProductId = product.Id,
+                PID = product.PID,
+                PName = product.PName,
+                HSN = product.HSN,
+                SPrice = product.SPrice,
+                PPrice = 0, // We would fetch this for real profit
+                PQty = cartItemModel.PQty,
+                Gst = product.Gst
+            });
+        }
+
+        cartItemModel = new CartItemEntryModel(); // Clear the form
+        RecalculateTotals();
+    }
+
+    private void RemoveItemFromCart(CartItem item)
+    {
+        cart.Remove(item);
+        RecalculateTotals();
+    }
+
+    // === Calculation Logic with Indian GST ===
+    private void RecalculateTotals()
+    {
+        // Reset the class-level totals
+        cartTotal = 0;
+        cartGst = 0;
+        decimal totalCGST = 0, totalSGST = 0, totalIGST = 0;
+
+        foreach (var item in cart)
+        {
+            item.Total = item.SPrice * (decimal)item.PQty;
+            item.GstAmount = (item.Total * item.Gst) / 100;
+
+            // Calculate CGST/SGST split (assuming intra-state for now)
+            var (cgst, sgst, igst) = gstService.CalculateGSTSplit(
+                item.Total, 
+                item.Gst, 
+                formModel.BillData.IsInterState
+            );
+
+            cartTotal += item.Total;
+            cartGst += item.GstAmount;
+            totalCGST += cgst;
+            totalSGST += sgst;
+            totalIGST += igst;
+        }
+
+        cartGrandTotal = cartTotal + cartGst;
+        formModel.PayAmt = cartGrandTotal; // Default Pay Amount
+        formModel.BillData.BalAmt = 0; // Default Balance
+        
+        // Store GST split in bill
+        formModel.BillData.CGSTAmount = totalCGST;
+        formModel.BillData.SGSTAmount = totalSGST;
+        formModel.BillData.IGSTAmount = totalIGST;
+
+        errorMessage = ""; // Clear error
+    }
+
+    private void CalculateBalance(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value?.ToString(), out decimal paidAmount))
+        {
+            formModel.PayAmt = paidAmount;
+            formModel.BillData.BalAmt = cartGrandTotal - paidAmount;
+        }
+    }
+
+    private void OnPaymentModeChanged(ChangeEventArgs e)
+    {
+        formModel.BillData.PaymentMode = e.Value?.ToString() ?? "Cash";
+        if (formModel.BillData.PaymentMode != "UPI")
+        {
+            formModel.BillData.UPIReference = null;
+        }
+        StateHasChanged();
+    }
+
+    // Barcode scanning support
+    private string barcodeInput = "";
+    
+    private async Task HandleBarcodeKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(barcodeInput))
+        {
+            await HandleBarcodeScan(barcodeInput);
+            barcodeInput = "";
+        }
+    }
+
+    private async Task HandleBarcodeScan(string barcode)
+    {
+        if (string.IsNullOrWhiteSpace(barcode))
+            return;
+
+        var product = await barcodeService.FindProductByBarcode(barcode);
+        if (product != null)
+        {
+            cartItemModel.SelectedProductId = product.Id;
+            cartItemModel.SPrice = product.SPrice;
+            cartItemModel.PQty = 1;
+            HandleAddItemToCart();
+            barcodeInput = ""; // Clear after adding
+        }
+        else
+        {
+            errorMessage = $"Product with barcode '{barcode}' not found.";
+        }
+    }
+
+    // === Hold Bill Logic (Replaces your dv1, dv2...) ===
+    private void HoldBill()
+    {
+        if (!cart.Any()) return;
+        heldCarts.Add(new List<CartItem>(cart)); // Add a copy
+        _ = ClearBill();
+    }
+
+    private void RestoreBill()
+    {
+        if (!heldCarts.Any()) return;
+
+        // If cart has items, hold it first
+        if (cart.Any()) HoldBill();
+
+        cart = heldCarts.First();
+        heldCarts.RemoveAt(0);
+        RecalculateTotals();
+    }
+
+    // === Save Bill Logic ===
+    private async Task HandleSaveBill()
+    {
+        if (!cart.Any())
+        {
+            errorMessage = "Cannot save an empty bill.";
+            return;
+        }
+
+        if (isSaving) return;
+
+        isSaving = true;
+        errorMessage = "";
+        successMessage = "";
+
+        // Get the main bill object from the form model
+        Bill billToSave = formModel.BillData;
+
+        // Set totals from our cart calculations
+        billToSave.TotalAmount = cartTotal;
+        billToSave.GstAmount = cartGst;
+        billToSave.GrandTotal = cartGrandTotal;
+
+        // Set payment amounts
+        billToSave.PayAmt = formModel.PayAmt;
+        billToSave.BalAmt = billToSave.GrandTotal - billToSave.PayAmt;
+
+        // Convert CartItem list to BillItem list
+        var billItems = cart.Select(c => new BillItem
+        {
+            ProductId = c.ProductId,
+            PID = c.PID,
+            PName = c.PName,
+            HSN = c.HSN,
+            PQty = c.PQty,
+            SPrice = c.SPrice,
+            PPrice = 0, // We would fetch this for real profit
+            Gst = c.Gst,
+            GstAmount = c.GstAmount,
+            Total = c.Total
+        }).ToList();
+
+        try
+        {
+            // Pass GST service for Indian GST calculations
+            var savedBill = await billingService.CreateBill(billToSave, billItems, gstService);
+            successMessage = $"Bill {savedBill.BillNo} saved successfully! ₹{savedBill.GrandTotal:N2}";
+
+            // This opens the new print window based on the selected format
+            string printUrl = formModel.PrintFormat switch
+            {
+                "A4" => $"/print/a4/{savedBill.Id}",
+                "A5" => $"/print/a5/{savedBill.Id}",
+                _ => $"/print/receipt/{savedBill.Id}"
+            };
+
+            // Use different window sizes for each format
+            string windowOptions = formModel.PrintFormat switch
+            {
+                "A4" => "width=1000,height=800",
+                "A5" => "width=800,height=600",
+                _ => "width=400,height=600"
+            };
+
+            await jsRuntime.InvokeVoidAsync("open", printUrl, "_blank", windowOptions);
+
+            await Task.Delay(500); // Brief delay to show success message
+            await ClearBill();
+            productList = await productService.GetProducts(); // Refresh stock levels
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error saving bill: {ex.Message}";
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task ClearBill()
+    {
+        cart.Clear();
+        var nextBillNo = await billingService.GetNextBillNo();
+        formModel = new BillSaveModel(); // Reset the form model
+        formModel.BillData.BillNo = nextBillNo;
+        ClearCustomer();
+        RecalculateTotals();
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,109 @@
+@inject NotificationService NotificationService
+@inject SessionService SessionService
+@implements IDisposable
+
+@using ModernBillingApp.Models
+
+<div class="dropdown">
+    <button class="btn btn-sm btn-outline-secondary position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="oi oi-bell"></span>
+        @if (unreadCount > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @unreadCount
+            </span>
+        }
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
+        <li><h6 class="dropdown-header">Notifications</h6></li>
+        @if (notifications == null || !notifications.Any())
+        {
+            <li><span class="dropdown-item-text text-muted">No notifications</span></li>
+        }
+        else
+        {
+            @foreach (var notification in notifications)
+            {
+                <li>
+                    <a class="dropdown-item @(notification.IsRead ? "" : "fw-bold")"
+                       href="@(notification.ActionUrl ?? "#")"
+                       @onclick="() => MarkAsRead(notification.Id)">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="small text-@GetNotificationColor(notification.Type)">@notification.Type</div>
+                                <div>@notification.Title</div>
+                                @if (!string.IsNullOrEmpty(notification.Message))
+                                {
+                                    <div class="small text-muted">@notification.Message</div>
+                                }
+                            </div>
+                            <div class="text-muted small">@GetTimeAgo(notification.CreatedDate)</div>
+                        </div>
+                    </a>
+                </li>
+            }
+        }
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <a class="dropdown-item text-center" href="#" @onclick="MarkAllAsRead">
+                <small>Mark all as read</small>
+            </a>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private List<Notification>? notifications;
+    private int unreadCount = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadNotifications();
+    }
+
+    private async Task LoadNotifications()
+    {
+        if (SessionService.CurrentUser != null)
+        {
+            notifications = await NotificationService.GetUnreadNotifications(SessionService.CurrentUser.Id);
+            unreadCount = await NotificationService.GetUnreadCount(SessionService.CurrentUser.Id);
+        }
+    }
+
+    private async Task MarkAsRead(int notificationId)
+    {
+        await NotificationService.MarkAsRead(notificationId, SessionService.CurrentUser?.Id);
+        await LoadNotifications();
+    }
+
+    private async Task MarkAllAsRead()
+    {
+        await NotificationService.MarkAllAsRead(SessionService.CurrentUser?.Id);
+        await LoadNotifications();
+    }
+
+    private string GetNotificationColor(string type)
+    {
+        return type switch
+        {
+            "Success" => "success",
+            "Warning" => "warning",
+            "Error" => "danger",
+            _ => "info"
+        };
+    }
+
+    private string GetTimeAgo(DateTime date)
+    {
+        var timeSpan = DateTime.Now - date;
+        if (timeSpan.TotalMinutes < 1) return "Just now";
+        if (timeSpan.TotalMinutes < 60) return $"{(int)timeSpan.TotalMinutes}m ago";
+        if (timeSpan.TotalHours < 24) return $"{(int)timeSpan.TotalHours}h ago";
+        return $"{(int)timeSpan.TotalDays}d ago";
+    }
+
+    public void Dispose()
+    {
+        // Cleanup if needed
+    }
+}

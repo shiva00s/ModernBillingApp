@@ -1,0 +1,148 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">ModernBillingApp</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable">
+    <nav class="flex-column">
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Dashboard
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="billing">
+                <span class="oi oi-cart" aria-hidden="true"></span> Billing
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="ToggleMasterMenu" style="cursor: pointer;">
+                <span class="oi oi-folder" aria-hidden="true"></span> Master
+            </NavLink>
+            <div class="@MasterMenuCssClass">
+                <nav class="flex-column" style="padding-left: 1rem;">
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="customer-management">
+                            <span class="oi oi-people" aria-hidden="true"></span> Customers
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="supplier-management">
+                            <span class="oi oi-spreadsheet" aria-hidden="true"></span> Suppliers
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="employee-management">
+                            <span class="oi oi-briefcase" aria-hidden="true"></span> Employees
+                        </NavLink>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="ToggleInventoryMenu" style="cursor: pointer;">
+                <span class="oi oi-box" aria-hidden="true"></span> Inventory
+            </NavLink>
+            <div class="@InventoryMenuCssClass">
+                <nav class="flex-column" style="padding-left: 1rem;">
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="product-catalog">
+                            <span class="oi oi-tags" aria-hidden="true"></span> Product Catalog
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="stock-in">
+                            <span class="oi oi-plus" aria-hidden="true"></span> Stock-In
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="stock-return">
+                            <span class="oi oi-minus" aria-hidden="true"></span> Stock Return
+                        </NavLink>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="ToggleReportsMenu" style="cursor: pointer;">
+                <span class="oi oi-bar-chart" aria-hidden="true"></span> Reports
+            </NavLink>
+            <div class="@ReportsMenuCssClass">
+                <nav class="flex-column" style="padding-left: 1rem;">
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="sales-reports">
+                            <span class="oi oi-graph" aria-hidden="true"></span> Sales Reports
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="stock-report">
+                            <span class="oi oi-inbox" aria-hidden="true"></span> Stock Report
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="customer-report">
+                            <span class="oi oi-book" aria-hidden="true"></span> Customer Report
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="expenses">
+                            <span class="oi oi-dollar" aria-hidden="true"></span> Expenses
+                        </NavLink>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="ToggleAdminMenu" style="cursor: pointer;">
+                <span class="oi oi-cog" aria-hidden="true"></span> Admin
+            </NavLink>
+            <div class="@AdminMenuCssClass">
+                <nav class="flex-column" style="padding-left: 1rem;">
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="shop-settings">
+                            <span class="oi oi-wrench" aria-hidden="true"></span> Shop Settings
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="user-management">
+                            <span class="oi oi-person" aria-hidden="true"></span> User Management
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="database-backup">
+                            <span class="oi oi-hard-drive" aria-hidden="true"></span> Backup
+                        </NavLink>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+    </nav>
+</div>
+
+@code {
+    // This code makes the sub-menus collapsible
+    private bool collapseMasterMenu = true;
+    private bool collapseInventoryMenu = true;
+    private bool collapseReportsMenu = true;
+    private bool collapseAdminMenu = true;
+
+    private string MasterMenuCssClass => collapseMasterMenu ? "collapse" : "";
+    private string InventoryMenuCssClass => collapseInventoryMenu ? "collapse" : "";
+    private string ReportsMenuCssClass => collapseReportsMenu ? "collapse" : "";
+    private string AdminMenuCssClass => collapseAdminMenu ? "collapse" : "";
+
+    private void ToggleMasterMenu() => collapseMasterMenu = !collapseMasterMenu;
+    private void ToggleInventoryMenu() => collapseInventoryMenu = !collapseInventoryMenu;
+    private void ToggleReportsMenu() => collapseReportsMenu = !collapseReportsMenu;
+    private void ToggleAdminMenu() => collapseAdminMenu = !collapseAdminMenu;
+}

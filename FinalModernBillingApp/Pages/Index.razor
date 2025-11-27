@@ -1,0 +1,364 @@
+@page "/"
+@using ModernBillingApp.Services
+@using Microsoft.AspNetCore.Components
+@inject DashboardService dashboardService
+@inject SessionService sessionService
+
+<div class="dashboard-header mb-2">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h2 class="mb-0">Store Dashboard</h2>
+            <small class="text-white-50">Welcome back, <strong>@(sessionService.CurrentUser?.Username ?? "User")</strong>!</small>
+        </div>
+        <div class="text-end">
+            <small class="text-white-50 d-block">@DateTime.Now.ToString("MMM dd, yyyy")</small>
+            <small class="text-white-50">@DateTime.Now.ToString("hh:mm tt")</small>
+        </div>
+    </div>
+</div>
+
+@if (stats == null)
+{
+    <div class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading dashboard data...</p>
+    </div>
+}
+else
+{
+    <div class="row g-2 mb-2">
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card stat-card-success h-100 shadow-sm" style="cursor: pointer;" @onclick="@(() => NavigateTo("/sales-reports"))">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="stat-label text-success text-uppercase mb-2">
+                                <span class="oi oi-dollar me-1"></span>Today's Sales
+                            </div>
+                            <div class="stat-value">₹@stats.TodaySales.ToString("N2")</div>
+                            <div class="stat-change text-success mt-2">
+                                <span class="oi oi-arrow-top"></span> Revenue
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <span class="oi oi-dollar"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card stat-card-danger h-100 shadow-sm" style="cursor:pointer" @onclick='() => NavigateTo("/cash-entry")'>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="stat-label text-danger text-uppercase mb-2">
+                                <span class="oi oi-cart me-1"></span>Today's Expenses
+                            </div>
+                            <div class="stat-value">₹@stats.TodayExpenses.ToString("N2")</div>
+                            <div class="stat-change text-danger mt-2">
+                                <span class="oi oi-arrow-bottom"></span> Costs
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <span class="oi oi-cart"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card stat-card-info h-100 shadow-sm" style="cursor:pointer" @onclick='() => NavigateTo("/customer-management")'>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="stat-label text-info text-uppercase mb-2">
+                                <span class="oi oi-people me-1"></span>New Customers
+                            </div>
+                            <div class="stat-value">@stats.NewCustomersToday</div>
+                            <div class="stat-change text-info mt-2">
+                                <span class="oi oi-plus"></span> Today
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <span class="oi oi-people"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card stat-card stat-card-warning h-100 shadow-sm" style="cursor:pointer" @onclick='() => NavigateTo("/product-catalog")'>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="stat-label text-warning text-uppercase mb-2">
+                                <span class="oi oi-warning me-1"></span>Low Stock Items
+                            </div>
+                            <div class="stat-value">@stats.LowStockItems</div>
+                            <div class="stat-change text-warning mt-2">
+                                <span class="oi oi-warning"></span> Needs Attention
+                            </div>
+                        </div>
+                        <div class="stat-icon">
+                            <span class="oi oi-warning"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-2">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><span class="oi oi-graph me-2"></span>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-1">
+                        <a href="/billing" class="btn btn-success btn-sm">
+                            <span class="oi oi-cart me-1"></span>New Sale / Billing
+                        </a>
+                        <a href="/product-catalog" class="btn btn-outline-primary btn-sm">
+                            <span class="oi oi-tags me-1"></span>Manage Products
+                        </a>
+                        <a href="/stock-in" class="btn btn-outline-primary btn-sm">
+                            <span class="oi oi-plus me-1"></span>Stock In
+                        </a>
+                        <a href="/sales-reports" class="btn btn-outline-info btn-sm">
+                            <span class="oi oi-bar-chart me-1"></span>View Reports
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><span class="oi oi-info me-2"></span>Today's Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="summary-item">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Net Profit (Sales - Expenses):</span>
+                            <strong class="text-success">@((stats.TodaySales - stats.TodayExpenses).ToString("C"))</strong>
+                        </div>
+                        <div class="progress mb-3" style="height: 8px;">
+                            @{
+                                var profitPercent = stats.TodaySales > 0 ? (double)((stats.TodaySales - stats.TodayExpenses) / stats.TodaySales * 100) : 0;
+                            }
+                            <div class="progress-bar @(profitPercent >= 0 ? "bg-success" : "bg-danger")"
+                                 role="progressbar"
+                                 style="width: @(Math.Abs(profitPercent))%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted small">
+                            <span>Profit Margin: @(profitPercent.ToString("F1"))%</span>
+                            <span>@DateTime.Now.ToString("MMM dd, yyyy")</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 0.75rem;
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .dashboard-header h2 {
+        color: white;
+        font-weight: 700;
+        font-size: 1.5rem;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 1;
+        margin: 0;
+    }
+
+    .stat-card {
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        background: white;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        transition: all 0.4s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.15) !important;
+    }
+
+    .stat-card-success {
+        background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+    }
+
+    .stat-card-success::before {
+        background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .stat-card-danger {
+        background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+    }
+
+    .stat-card-danger::before {
+        background: linear-gradient(90deg, #ff6b6b 0%, #ee5a6f 100%);
+    }
+
+    .stat-card-info {
+        background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+    }
+
+    .stat-card-info::before {
+        background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    }
+
+    .stat-card-warning {
+        background: linear-gradient(135deg, #ffffff 0%, #fffbf0 100%);
+    }
+
+    .stat-card-warning::before {
+        background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+    }
+
+    .stat-change {
+        font-size: 0.9rem;
+        font-weight: 600;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        display: inline-block;
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        opacity: 0.15;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        transition: all 0.3s;
+    }
+
+    .stat-card:hover .stat-icon {
+        opacity: 0.25;
+        transform: scale(1.1);
+    }
+
+    .summary-item {
+        padding: 0.5rem 0;
+    }
+
+    .progress {
+        height: 12px;
+        border-radius: 10px;
+        background: #e2e8f0;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        border-radius: 10px;
+        transition: width 0.6s ease;
+    }
+
+    .btn-outline-primary {
+        border: 2px solid #667eea;
+        color: #667eea;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-outline-info {
+        border: 2px solid #43e97b;
+        color: #43e97b;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-info:hover {
+        background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(67, 233, 123, 0.3);
+    }
+</style>
+
+@code {
+    private DashboardService.DashboardStats? stats;
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        stats = await dashboardService.GetDashboardStats();
+    }
+
+    private void NavigateTo(string url)
+    {
+        Navigation.NavigateTo(url);
+    }
+}

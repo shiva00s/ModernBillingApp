@@ -1,0 +1,508 @@
+@page "/reports"
+@using MergeModernBilling.Models
+@using MergeModernBilling.Services
+@inject BillingService BillingService
+@inject CustomerService CustomerService
+@inject ProductService ProductService
+
+<PageTitle>Reports & Analytics</PageTitle>
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3>Reports & Analytics</h3>
+        </div>
+    </div>
+
+    <!-- Date Range Filter -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <label class="form-label">From Date</label>
+            <input type="date" class="form-control" @bind="fromDate" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">To Date</label>
+            <input type="date" class="form-control" @bind="toDate" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Report Type</label>
+            <select class="form-select" @bind="selectedReportType" @onchange="LoadReportData">
+                <option value="summary">Business Summary</option>
+                <option value="sales">Sales Report</option>
+                <option value="products">Product Analysis</option>
+                <option value="customers">Customer Analysis</option>
+                <option value="tax">Tax Report</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-primary" @onclick="LoadReportData">
+                <i class="fas fa-sync"></i> Generate Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Revenue</h5>
+                    <h3>@totalRevenue.ToString("C")</h3>
+                    <small>Period: @periodDays days</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Bills</h5>
+                    <h3>@totalBills</h3>
+                    <small>Average: @averageBillValue.ToString("C")</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Customers</h5>
+                    <h3>@totalCustomers</h3>
+                    <small>Active this period</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Tax Collected</h5>
+                    <h3>@totalTax.ToString("C")</h3>
+                    <small>@taxRate% tax rate</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Content -->
+    @switch (selectedReportType)
+    {
+        case "summary":
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Revenue Trend</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Top Products</h5>
+                        </div>
+                        <div class="card-body">
+                            @if (topProducts.Any())
+                            {
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var product in topProducts.Take(10))
+                                        {
+                                            <tr>
+                                                <td>@product.Name</td>
+                                                <td>@product.QuantitySold</td>
+                                                <td>@product.Revenue.ToString("C")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            break;
+
+        case "sales":
+            <div class="card">
+                <div class="card-header">
+                    <h5>Sales Report</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Bill Number</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Subtotal</th>
+                                    <th>Tax</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var bill in salesData)
+                                {
+                                    <tr>
+                                        <td>@bill.BillDate.ToString("dd/MM/yyyy")</td>
+                                        <td>@bill.BillNumber</td>
+                                        <td>@bill.CustomerName</td>
+                                        <td>@bill.TotalItems</td>
+                                        <td>@bill.Subtotal.ToString("C")</td>
+                                        <td>@bill.TaxAmount.ToString("C")</td>
+                                        <td>@bill.TotalAmount.ToString("C")</td>
+                                        <td>
+                                            <span class="badge bg-@(bill.PaymentMethod == "Cash" ? "success" : "primary")">
+                                                @bill.PaymentMethod
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            break;
+
+        case "products":
+            <div class="card">
+                <div class="card-header">
+                    <h5>Product Analysis</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Sold</th>
+                                    <th>Revenue</th>
+                                    <th>Profit Margin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in productAnalysis)
+                                {
+                                    <tr>
+                                        <td>@product.Name</td>
+                                        <td>@product.Category</td>
+                                        <td class="@(product.Stock <= 10 ? "text-danger" : "")">@product.Stock</td>
+                                        <td>@product.Sold</td>
+                                        <td>@product.Revenue.ToString("C")</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-success" style="width: @product.ProfitMargin%">
+                                                    @product.ProfitMargin.ToString("F1")%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            break;
+
+        case "customers":
+            <div class="card">
+                <div class="card-header">
+                    <h5>Customer Analysis</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Phone</th>
+                                    <th>Total Bills</th>
+                                    <th>Total Spent</th>
+                                    <th>Average Bill</th>
+                                    <th>Last Visit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var customer in customerAnalysis)
+                                {
+                                    <tr>
+                                        <td>@customer.Name</td>
+                                        <td>@customer.Phone</td>
+                                        <td>@customer.TotalBills</td>
+                                        <td>@customer.TotalSpent.ToString("C")</td>
+                                        <td>@customer.AverageBill.ToString("C")</td>
+                                        <td>@customer.LastVisit.ToString("dd/MM/yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            break;
+
+        case "tax":
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Tax Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <tr>
+                                    <td>Total Sales (Taxable)</td>
+                                    <td>@taxableSales.ToString("C")</td>
+                                </tr>
+                                <tr>
+                                    <td>Tax Rate</td>
+                                    <td>@taxRate%</td>
+                                </tr>
+                                <tr>
+                                    <td>Tax Collected</td>
+                                    <td>@totalTax.ToString("C")</td>
+                                </tr>
+                                <tr>
+                                    <td>Exempt Sales</td>
+                                    <td>@exemptSales.ToString("C")</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Monthly Tax Breakdown</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="taxChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            break;
+    }
+
+    <!-- Export Options -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Export Options</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-outline-primary me-2" @onclick="() => ExportReport("pdf")">
+                        <i class="fas fa-file-pdf"></i> Export as PDF
+                    </button>
+                    <button class="btn btn-outline-success me-2" @onclick="() => ExportReport("excel")">
+                        <i class="fas fa-file-excel"></i> Export as Excel
+                    </button>
+                    <button class="btn btn-outline-info" @onclick="() => ExportReport("csv")">
+                        <i class="fas fa-file-csv"></i> Export as CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private DateTime fromDate = DateTime.Now.AddDays(-30);
+    private DateTime toDate = DateTime.Now;
+    private string selectedReportType = "summary";
+    
+    // Summary data
+    private decimal totalRevenue = 0;
+    private int totalBills = 0;
+    private int totalCustomers = 0;
+    private decimal totalTax = 0;
+    private decimal averageBillValue = 0;
+    private int periodDays = 30;
+    private decimal taxRate = 18m;
+    
+    // Report data
+    private List<TopProduct> topProducts = new();
+    private List<SalesRecord> salesData = new();
+    private List<ProductAnalysis> productAnalysis = new();
+    private List<CustomerAnalysis> customerAnalysis = new();
+    private decimal taxableSales = 0;
+    private decimal exemptSales = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadReportData();
+    }
+
+    private async Task LoadReportData()
+    {
+        periodDays = (toDate - fromDate).Days + 1;
+        
+        // Load bills for the period
+        var bills = await BillingService.GetBillsByDateRangeAsync(fromDate, toDate);
+        
+        // Calculate summary metrics
+        totalBills = bills.Count;
+        totalRevenue = bills.Sum(b => b.TotalAmount);
+        totalTax = bills.Sum(b => b.TaxAmount);
+        averageBillValue = totalBills > 0 ? totalRevenue / totalBills : 0;
+        
+        // Get unique customers
+        totalCustomers = bills.Select(b => b.CustomerId).Distinct().Count();
+        
+        // Load specific report data based on type
+        switch (selectedReportType)
+        {
+            case "summary":
+                await LoadSummaryData(bills);
+                break;
+            case "sales":
+                await LoadSalesData(bills);
+                break;
+            case "products":
+                await LoadProductData(bills);
+                break;
+            case "customers":
+                await LoadCustomerData(bills);
+                break;
+            case "tax":
+                await LoadTaxData(bills);
+                break;
+        }
+        
+        StateHasChanged();
+    }
+
+    private async Task LoadSummaryData(List<Bill> bills)
+    {
+        // Calculate top products
+        topProducts = bills
+            .SelectMany(b => b.BillItems)
+            .GroupBy(bi => bi.ProductId)
+            .Select(g => new TopProduct
+            {
+                Name = $"Product {g.Key}", // Would need to join with products
+                QuantitySold = g.Sum(bi => bi.Quantity),
+                Revenue = g.Sum(bi => bi.TotalPrice)
+            })
+            .OrderByDescending(p => p.Revenue)
+            .ToList();
+    }
+
+    private async Task LoadSalesData(List<Bill> bills)
+    {
+        salesData = bills.Select(b => new SalesRecord
+        {
+            BillDate = b.BillDate,
+            BillNumber = b.BillNumber,
+            CustomerName = $"Customer {b.CustomerId}", // Would need to join with customers
+            TotalItems = b.BillItems.Sum(bi => bi.Quantity),
+            Subtotal = b.Subtotal,
+            TaxAmount = b.TaxAmount,
+            TotalAmount = b.TotalAmount,
+            PaymentMethod = b.PaymentMethod
+        }).OrderByDescending(b => b.BillDate).ToList();
+    }
+
+    private async Task LoadProductData(List<Bill> bills)
+    {
+        var products = await ProductService.GetAllProductsAsync();
+        
+        productAnalysis = products.Select(p => new ProductAnalysis
+        {
+            Name = p.Name,
+            Category = p.Category,
+            Stock = p.StockQuantity,
+            Sold = bills.SelectMany(b => b.BillItems).Where(bi => bi.ProductId == p.Id).Sum(bi => bi.Quantity),
+            Revenue = bills.SelectMany(b => b.BillItems).Where(bi => bi.ProductId == p.Id).Sum(bi => bi.TotalPrice),
+            ProfitMargin = 25m // Placeholder - would need cost calculation
+        }).OrderByDescending(p => p.Revenue).ToList();
+    }
+
+    private async Task LoadCustomerData(List<Bill> bills)
+    {
+        var customers = await CustomerService.GetAllCustomersAsync();
+        
+        customerAnalysis = customers.Select(c => new CustomerAnalysis
+        {
+            Name = c.Name,
+            Phone = c.Phone,
+            TotalBills = bills.Count(b => b.CustomerId == c.Id),
+            TotalSpent = bills.Where(b => b.CustomerId == c.Id).Sum(b => b.TotalAmount),
+            AverageBill = 0,
+            LastVisit = bills.Where(b => b.CustomerId == c.Id).OrderByDescending(b => b.BillDate).Select(b => b.BillDate).FirstOrDefault()
+        }).Where(c => c.TotalBills > 0).ToList();
+        
+        foreach (var customer in customerAnalysis)
+        {
+            customer.AverageBill = customer.TotalBills > 0 ? customer.TotalSpent / customer.TotalBills : 0;
+        }
+    }
+
+    private async Task LoadTaxData(List<Bill> bills)
+    {
+        taxableSales = bills.Where(b => b.TaxAmount > 0).Sum(b => b.Subtotal);
+        exemptSales = bills.Where(b => b.TaxAmount == 0).Sum(b => b.Subtotal);
+    }
+
+    private async Task ExportReport(string format)
+    {
+        // Implementation would depend on the export library used
+        // This is a placeholder for the export functionality
+        Console.WriteLine($"Exporting report as {format}");
+    }
+}
+
+// Helper classes for report data
+public class TopProduct
+{
+    public string Name { get; set; } = "";
+    public int QuantitySold { get; set; }
+    public decimal Revenue { get; set; }
+}
+
+public class SalesRecord
+{
+    public DateTime BillDate { get; set; }
+    public string BillNumber { get; set; } = "";
+    public string CustomerName { get; set; } = "";
+    public int TotalItems { get; set; }
+    public decimal Subtotal { get; set; }
+    public decimal TaxAmount { get; set; }
+    public decimal TotalAmount { get; set; }
+    public string PaymentMethod { get; set; } = "";
+}
+
+public class ProductAnalysis
+{
+    public string Name { get; set; } = "";
+    public string Category { get; set; } = "";
+    public int Stock { get; set; }
+    public int Sold { get; set; }
+    public decimal Revenue { get; set; }
+    public decimal ProfitMargin { get; set; }
+}
+
+public class CustomerAnalysis
+{
+    public string Name { get; set; } = "";
+    public string Phone { get; set; } = "";
+    public int TotalBills { get; set; }
+    public decimal TotalSpent { get; set; }
+    public decimal AverageBill { get; set; }
+    public DateTime LastVisit { get; set; }
+}

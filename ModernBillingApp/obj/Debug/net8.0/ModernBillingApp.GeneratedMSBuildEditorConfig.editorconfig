@@ -1,0 +1,159 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ModernBillingApp
+build_property.RootNamespace = ModernBillingApp
+build_property.ProjectDir = E:\Project\1 To upgrade need\ModernBillingApp\ModernBillingApp\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = E:\Project\1 To upgrade need\ModernBillingApp\ModernBillingApp
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/AuthRedirect.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRoUmVkaXJlY3QucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/Layout/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcRW1wdHlMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/NotificationBell.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xOb3RpZmljYXRpb25CZWxsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/ThemeToggle.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xUaGVtZVRvZ2dsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/ToastNotification.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xUb2FzdE5vdGlmaWNhdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/BillingPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbGluZ1BhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/BillPrintA4.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbFByaW50QTQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/BillPrintA5.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbFByaW50QTUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/BillPrintReceipt.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmlsbFByaW50UmVjZWlwdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/CustomerManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJNYW5hZ2VtZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/CustomerReport.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJSZXBvcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/DatabaseBackup.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGF0YWJhc2VCYWNrdXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/EmployeeManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbG95ZWVNYW5hZ2VtZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/EmptyLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wdHlMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/Expenses.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXhwZW5zZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/ProductCatalog.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdENhdGFsb2cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/ProfitReportTab.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZml0UmVwb3J0VGFiLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/SalesLogTab.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNMb2dUYWIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/SalesReports.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsZXNSZXBvcnRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/ShopSettingsPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hvcFNldHRpbmdzUGFnZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/StockIn.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RvY2tJbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/StockReport.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RvY2tSZXBvcnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/StockReturnPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3RvY2tSZXR1cm5QYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/SupplierManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwcGxpZXJNYW5hZ2VtZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/UserManagement.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlck1hbmFnZW1lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Pages/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0qt5ec4bux
+
+[E:/Project/1 To upgrade need/ModernBillingApp/ModernBillingApp/Components/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-imaa1tbtve

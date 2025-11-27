@@ -1,0 +1,67 @@
+﻿@page "/sales-reports"
+@using Microsoft.AspNetCore.Components.Forms
+@inject ReportService reportService
+
+<h3>Sales & Profit Reports</h3>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <button class="nav-link @(currentTab == "sales" ? "active" : "")" @onclick="() => SetTab("sales")">Sales Log</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link @(currentTab == "profit" ? "active" : "")" @onclick="() => SetTab("profit")">Profit Report</button>
+    </li>
+</ul>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <label>From Date</label>
+                <InputDate @bind-value="fromDate" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label>To Date</label>
+                <InputDate @bind-value="toDate" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary mt-4" @onclick="LoadReports">Load Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (currentTab == "sales")
+{
+    <CascadingValue Value="salesLog">
+        <SalesLogTab />
+    </CascadingValue>
+}
+else if (currentTab == "profit")
+{
+    <CascadingValue Value="profitReport">
+        <ProfitReportTab />
+    </CascadingValue>
+}
+
+
+@code {
+    private string currentTab = "sales"; // Default tab
+    private DateTime fromDate = DateTime.Today;
+    private DateTime toDate = DateTime.Today.AddDays(1).AddTicks(-1); // End of today
+
+    private List<BillItem> salesLog = new List<BillItem>();
+    private List<ProfitReportModel> profitReport = new List<ProfitReportModel>();
+
+    private void SetTab(string tabName)
+    {
+        currentTab = tabName;
+    }
+
+    private async Task LoadReports()
+    {
+        // Load data for both tabs at once
+        salesLog = await reportService.GetSalesLog(fromDate, toDate);
+        profitReport = await reportService.GetProfitReport(fromDate, toDate);
+    }
+}

@@ -1,0 +1,84 @@
+@if (messages.Any())
+{
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+        @foreach (var message in messages)
+        {
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header @GetHeaderClass(message.Type)">
+                    <strong class="me-auto">@GetTitle(message.Type)</strong>
+                    <button type="button" class="btn-close" @onclick="() => Dismiss(message.Id)"></button>
+                </div>
+                <div class="toast-body">
+                    @message.Message
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<ToastMessage> messages = new();
+
+    public void Show(string message, ToastType type = ToastType.Info)
+    {
+        var toast = new ToastMessage
+        {
+            Id = Guid.NewGuid(),
+            Message = message,
+            Type = type
+        };
+        messages.Add(toast);
+        StateHasChanged();
+
+        // Auto-dismiss after 5 seconds
+        Task.Delay(5000).ContinueWith(_ =>
+        {
+            Dismiss(toast.Id);
+        });
+    }
+
+    private void Dismiss(Guid id)
+    {
+        messages.RemoveAll(m => m.Id == id);
+        StateHasChanged();
+    }
+
+    private string GetHeaderClass(ToastType type) => type switch
+    {
+        ToastType.Success => "bg-success text-white",
+        ToastType.Error => "bg-danger text-white",
+        ToastType.Warning => "bg-warning text-dark",
+        _ => "bg-info text-white"
+    };
+
+    private string GetTitle(ToastType type) => type switch
+    {
+        ToastType.Success => "Success",
+        ToastType.Error => "Error",
+        ToastType.Warning => "Warning",
+        _ => "Info"
+    };
+
+    public class ToastMessage
+    {
+        public Guid Id { get; set; }
+        public string Message { get; set; } = "";
+        public ToastType Type { get; set; }
+    }
+
+    public enum ToastType
+    {
+        Info,
+        Success,
+        Warning,
+        Error
+    }
+}
+
+<style>
+    .toast {
+        min-width: 300px;
+        margin-bottom: 0.5rem;
+    }
+</style>
+

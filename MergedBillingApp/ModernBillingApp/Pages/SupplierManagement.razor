@@ -1,0 +1,177 @@
+﻿@page "/supplier-management"
+@inject SupplierService supplierService
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Supplier Management</h3>
+<p>Manage your supplier list and contact details.</p>
+
+<div class="row">
+    <div class="col-md-7">
+        <h5>Current Suppliers</h5>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>City</th>
+                    <th>GST No.</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (supplierList == null)
+                {
+                    <tr><td colspan="5">Loading...</td></tr>
+                }
+                else
+                {
+                    @foreach (var supplier in supplierList)
+                    {
+                        <tr @onclick="() => SelectSupplier(supplier)" style="cursor:pointer">
+                            <td>@supplier.VName</td>
+                            <td>@supplier.VContact</td>
+                            <td>@supplier.VCity</td>
+                            <td>@supplier.VGST</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" @onclick="() => SelectSupplier(supplier)">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5>@formTitle</h5>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@editModel" OnValidSubmit="HandleSave">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="mb-2">
+                        <label class="form-label">Supplier Name</label>
+                        <InputText @bind-Value="editModel.VName" class="form-control" />
+                        <ValidationMessage For="@(() => editModel.VName)" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Contact / Mobile</label>
+                        <InputText @bind-Value="editModel.VContact" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Address</label>
+                        <InputText @bind-Value="editModel.VAddress" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">City</label>
+                        <InputText @bind-Value="editModel.VCity" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">GST No.</label>
+                        <InputText @bind-Value="editModel.VGST" class="form-control" />
+                    </div>
+                    
+                    <hr />
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearSelection">New</button>
+                    
+                    @if (editModel.Id != 0)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="HandleDelete">Delete</button>
+                    }
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Supplier> supplierList = new List<Supplier>();
+    private SupplierEditModel editModel = new SupplierEditModel();
+    private string formTitle = "Create New Supplier";
+    private int selectedSupplierId = 0;
+
+    // A helper class for form validation
+    public class SupplierEditModel
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Supplier name is required.")]
+        public string VName { get; set; } = "";
+        public string? VContact { get; set; }
+        public string? VAddress { get; set; }
+        public string? VCity { get; set; }
+        public string? VGST { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        supplierList = await supplierService.GetSuppliers();
+        StateHasChanged(); // Refresh the UI
+    }
+
+    private void SelectSupplier(Supplier supplier)
+    {
+        selectedSupplierId = supplier.Id;
+        editModel = new SupplierEditModel
+        {
+            Id = supplier.Id,
+            VName = supplier.VName ?? "",
+            VContact = supplier.VContact,
+            VAddress = supplier.VAddress,
+            VCity = supplier.VCity,
+            VGST = supplier.VGST
+        };
+        formTitle = $"Edit Supplier: {supplier.VName}";
+    }
+
+    private void ClearSelection()
+    {
+        selectedSupplierId = 0;
+        editModel = new SupplierEditModel();
+        formTitle = "Create New Supplier";
+    }
+
+    private async Task HandleSave()
+    {
+        Supplier supplierToSave = new Supplier
+        {
+            Id = selectedSupplierId,
+            VName = editModel.VName,
+            VContact = editModel.VContact,
+            VAddress = editModel.VAddress,
+            VCity = editModel.VCity,
+            VGST = editModel.VGST
+        };
+
+        if (selectedSupplierId == 0) // New Supplier
+        {
+            await supplierService.CreateSupplier(supplierToSave);
+        }
+        else // Existing Supplier
+        {
+            await supplierService.UpdateSupplier(supplierToSave);
+        }
+        
+        ClearSelection();
+        await LoadData();
+    }
+
+    private async Task HandleDelete()
+    {
+        if(selectedSupplierId == 0) return;
+        
+        await supplierService.DeleteSupplier(selectedSupplierId);
+        ClearSelection();
+        await LoadData();
+    }
+}

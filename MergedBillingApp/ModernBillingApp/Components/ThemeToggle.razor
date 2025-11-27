@@ -1,0 +1,43 @@
+@inject ThemeService ThemeService
+@implements IDisposable
+
+<button class="btn btn-sm btn-outline-secondary" @onclick="ToggleTheme" title="Toggle Dark/Light Mode">
+    @if (ThemeService.IsDarkMode)
+    {
+        <span class="oi oi-sun"></span>
+    }
+    else
+    {
+        <span class="oi oi-moon"></span>
+    }
+</button>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ThemeService.OnThemeChanged += StateHasChanged;
+        ApplyTheme();
+    }
+
+    private void ToggleTheme()
+    {
+        ThemeService.ToggleTheme();
+        ApplyTheme();
+    }
+
+    private void ApplyTheme()
+    {
+        // Apply theme to document
+        if (ThemeService.IsDarkMode)
+        {
+            // Add dark mode class or data attribute
+            // This will be handled via JavaScript or CSS
+        }
+    }
+
+    public void Dispose()
+    {
+        ThemeService.OnThemeChanged -= StateHasChanged;
+    }
+}
+

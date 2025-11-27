@@ -1,0 +1,170 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\services\\cashentryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\cashentryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\services\\sessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\sessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\pages\\billingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\billingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\pages\\shopsettingspage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\shopsettingspage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|e:\\project\\1 to upgrade need\\modernbillingapp\\modernbillingapp\\components\\notificationbell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\components\\notificationbell.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Program.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Program.cs",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Program.cs",
+              "RelativeToolTip": "ModernBillingApp\\Program.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAawG4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T17:16:49.985Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CashEntryService.cs",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Services\\CashEntryService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\CashEntryService.cs",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Services\\CashEntryService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\CashEntryService.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAEwFYAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T17:16:42.085Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SessionService.cs",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Services\\SessionService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\SessionService.cs",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Services\\SessionService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\SessionService.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAswC0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-25T16:40:23.541Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BillingPage.razor",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Pages\\BillingPage.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\BillingPage.razor",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Pages\\BillingPage.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\BillingPage.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T19:54:28.412Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ShopSettingsPage.razor",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "ViewState": "AgIAADMAAAAAAAAAAAAmwE0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T19:54:22.112Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Login.razor",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Pages\\Login.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\Login.razor",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Pages\\Login.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\Login.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T19:54:14.757Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "NotificationBell.razor",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Components\\NotificationBell.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Components\\NotificationBell.razor",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Components\\NotificationBell.razor",
+              "RelativeToolTip": "ModernBillingApp\\Components\\NotificationBell.razor",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAmwGwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T19:54:01.512Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "E:\\Project\\1 To upgrade need\\ModernBillingApp\\ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAUwEQAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-21T19:07:52.678Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

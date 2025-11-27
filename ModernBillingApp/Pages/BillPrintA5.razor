@@ -1,0 +1,211 @@
+﻿@page "/print/a5/{BillId:int}"
+@layout EmptyLayout
+@inject BillingService billingService
+@inject SettingsService settingsService
+@inject IJSRuntime jsRuntime
+@using Microsoft.JSInterop
+@using ModernBillingApp
+
+<div class="a5-page">
+    <div class="header-section">
+        <div class="logo">
+            @if (settings?.Logo != null)
+            {
+                <img src="@($"data:image/png;base64,{Convert.ToBase64String(settings.Logo)}")" />
+            }
+            <h5>@settings?.ShopName</h5>
+        </div>
+        <div class="invoice-title">
+            <h6>INVOICE</h6>
+            <p>Bill No: @bill?.BillNo</p>
+            <p>Date: @bill?.BDate.ToString("dd/MM/yy")</p>
+        </div>
+    </div>
+
+    <div class="bill-info">
+        <strong>BILL TO:</strong>
+        <p>@bill?.CName (@bill?.CContact)</p>
+        <p>@bill?.Customer?.CAddress</p>
+    </div>
+
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (bill?.Items != null)
+            {
+                int i = 1;
+                @foreach (var item in bill.Items)
+                {
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.PName</td>
+                        <td>@item.SPrice.ToString("0.00")</td>
+                        <td>@item.PQty</td>
+                        <td class="text-end">@item.Total.ToString("0.00")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="totals-section">
+        <div class="summary">
+            <p><span>Sub-Total:</span> <span>@bill?.TotalAmount.ToString("0.00")</span></p>
+            <p><span>Total GST:</span> <span>@bill?.GstAmount.ToString("0.00")</span></p>
+            <h5 class="grand-total">
+                <span>Grand Total:</span> <span>@bill?.GrandTotal.ToString("0.00")</span>
+            </h5>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank You!</p>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #EEE;
+    }
+
+    .a5-page {
+        width: 148mm;
+        height: 210mm;
+        padding: 10mm;
+        margin: 10mm auto;
+        border: 1px solid #D3D3D3;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #000;
+        padding-bottom: 5px;
+    }
+
+        .header-section .logo img {
+            max-width: 100px;
+            max-height: 70px;
+        }
+
+        .header-section .logo h5 {
+            margin: 2px 0 0 0;
+        }
+
+    .invoice-title {
+        text-align: right;
+    }
+
+        .invoice-title h6 {
+            margin: 0;
+            font-size: 14pt;
+        }
+
+        .invoice-title p {
+            margin: 2px 0;
+            font-size: 9pt;
+        }
+
+    .bill-info {
+        margin-top: 15px;
+    }
+
+        .bill-info p {
+            margin: 2px 0;
+        }
+
+    .item-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-size: 9pt;
+    }
+
+        .item-table th, .item-table td {
+            border: 1px solid #DDD;
+            padding: 5px;
+        }
+
+        .item-table thead {
+            background-color: #f4f4f4;
+        }
+
+        .item-table .text-end {
+            text-align: right;
+        }
+
+    .totals-section {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 15px;
+    }
+
+        .totals-section .summary {
+            width: 50%;
+        }
+
+        .totals-section p {
+            display: flex;
+            justify-content: space-between;
+            margin: 3px 0;
+        }
+
+        .totals-section .grand-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #000;
+            padding-top: 3px;
+            font-size: 12pt;
+        }
+
+    .footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 5px;
+        font-size: 9pt;
+    }
+
+    @@media print {
+        body, .a5-page {
+            margin: 0;
+            box-shadow: none;
+            border: none;
+            background: white;
+        }
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int BillId { get; set; }
+
+    private Bill? bill;
+    private ShopSettings? settings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        bill = await billingService.GetBillById(BillId);
+        settings = await settingsService.GetSettings();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && bill != null)
+        {
+            await jsRuntime.InvokeVoidAsync("openPrintDialog");
+        }
+    }
+}

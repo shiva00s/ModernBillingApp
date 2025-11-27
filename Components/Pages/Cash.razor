@@ -1,0 +1,588 @@
+@page "/cash"
+@using MergeModernBilling.Models
+@using MergeModernBilling.Services
+@inject NavigationManager NavigationManager
+
+<PageTitle>Cash Management</PageTitle>
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h3>Cash Management</h3>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-primary" @onclick="ShowCashEntryModal">
+                <i class="fas fa-plus"></i> Cash Entry
+            </button>
+            <button class="btn btn-success ms-2" @onclick="ShowCashOutModal">
+                <i class="fas fa-minus"></i> Cash Out
+            </button>
+        </div>
+    </div>
+
+    <!-- Cash Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Opening Balance</h5>
+                    <h3>@openingBalance.ToString("C")</h3>
+                    <small>Today's start</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Cash In</h5>
+                    <h3>@totalCashIn.ToString("C")</h3>
+                    <small>Today's receipts</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Cash Out</h5>
+                    <h3>@totalCashOut.ToString("C")</h3>
+                    <small>Today's expenses</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Current Balance</h5>
+                    <h3>@currentBalance.ToString("C")</h3>
+                    <small>Available cash</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Filter -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <label class="form-label">From Date</label>
+            <input type="date" class="form-control" @bind="fromDate" @onchange="LoadCashTransactions" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">To Date</label>
+            <input type="date" class="form-control" @bind="toDate" @onchange="LoadCashTransactions" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Transaction Type</label>
+            <select class="form-select" @bind="transactionFilter" @onchange="FilterTransactions">
+                <option value="all">All Transactions</option>
+                <option value="in">Cash In</option>
+                <option value="out">Cash Out</option>
+                <option value="sale">Sales</option>
+                <option value="expense">Expenses</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">&nbsp;</label>
+            <button class="btn btn-outline-primary d-block w-100" @onclick="ExportCashReport">
+                <i class="fas fa-download"></i> Export Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Cash Transactions Table -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Cash Transactions</h5>
+        </div>
+        <div class="card-body">
+            @if (cashTransactions == null || cashTransactions.Count == 0)
+            {
+                <div class="text-center py-4">
+                    <i class="fas fa-money-bill-wave fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No cash transactions found</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Description</th>
+                                <th>Reference</th>
+                                <th>Amount</th>
+                                <th>Balance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var transaction in cashTransactions)
+                            {
+                                <tr>
+                                    <td>@transaction.TransactionDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        <span class="badge bg-@(transaction.Type == "IN" ? "success" : "danger")">
+                                            @(transaction.Type == "IN" ? "Cash In" : "Cash Out")
+                                        </span>
+                                    </td>
+                                    <td>@transaction.Category</td>
+                                    <td>@transaction.Description</td>
+                                    <td>@transaction.ReferenceNumber</td>
+                                    <td class="@(transaction.Type == "IN" ? "text-success" : "text-danger")">
+                                        @(transaction.Type == "IN" ? "+" : "-")@transaction.Amount.ToString("C")
+                                    </td>
+                                    <td>@transaction.BalanceAfterTransaction.ToString("C")</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" @onclick="() => ViewTransaction(transaction)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteTransaction(transaction)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-dark">
+                                <th colspan="5">Total</th>
+                                <th class="text-success">+@totalCashIn.ToString("C")</th>
+                                <th class="text-danger">-@totalCashOut.ToString("C")</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Cash Summary by Category -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Cash In by Category</h5>
+                </div>
+                <div class="card-body">
+                    @if (cashInByCategory.Any())
+                    {
+                        foreach (var category in cashInByCategory)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>@category.Category</span>
+                                <span class="badge bg-success">@category.Amount.ToString("C")</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-success" style="width: @category.Percentage%"></div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Cash Out by Category</h5>
+                </div>
+                <div class="card-body">
+                    @if (cashOutByCategory.Any())
+                    {
+                        foreach (var category in cashOutByCategory)
+                        {
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>@category.Category</span>
+                                <span class="badge bg-danger">@category.Amount.ToString("C")</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-danger" style="width: @category.Percentage%"></div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cash Entry Modal -->
+@if (showCashEntryModal)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cash Entry</h5>
+                    <button type="button" class="btn-close" @onclick="CloseCashEntryModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" @bind="cashEntry.Category">
+                                <option value="">Select Category</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Customer Payment">Customer Payment</option>
+                                <option value="Loan Received">Loan Received</option>
+                                <option value="Investment">Investment</option>
+                                <option value="Other Income">Other Income</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amount</label>
+                            <input type="number" class="form-control" @bind="cashEntry.Amount" step="0.01" min="0" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" @bind="cashEntry.Description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Reference Number</label>
+                            <input type="text" class="form-control" @bind="cashEntry.ReferenceNumber" placeholder="Bill number, receipt number, etc." />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Payment Method</label>
+                            <select class="form-select" @bind="cashEntry.PaymentMethod">
+                                <option value="Cash">Cash</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="UPI">UPI</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseCashEntryModal">Cancel</button>
+                    <button type="button" class="btn btn-success" @onclick="SaveCashEntry">Add Cash Entry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Cash Out Modal -->
+@if (showCashOutModal)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cash Out</h5>
+                    <button type="button" class="btn-close" @onclick="CloseCashOutModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" @bind="cashOut.Category">
+                                <option value="">Select Category</option>
+                                <option value="Purchase">Purchase</option>
+                                <option value="Salary">Salary</option>
+                                <option value="Rent">Rent</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Transportation">Transportation</option>
+                                <option value="Office Supplies">Office Supplies</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Other Expense">Other Expense</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Amount</label>
+                            <input type="number" class="form-control" @bind="cashOut.Amount" step="0.01" min="0" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" @bind="cashOut.Description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Reference Number</label>
+                            <input type="text" class="form-control" @bind="cashOut.ReferenceNumber" placeholder="Bill number, receipt number, etc." />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Payment Method</label>
+                            <select class="form-select" @bind="cashOut.PaymentMethod">
+                                <option value="Cash">Cash</option>
+                                <option value="Bank Transfer">Bank Transfer</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="UPI">UPI</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseCashOutModal">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="SaveCashOut">Record Cash Out</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    // Data properties
+    private List<CashTransaction> cashTransactions = new();
+    private List<CategorySummary> cashInByCategory = new();
+    private List<CategorySummary> cashOutByCategory = new();
+    
+    // Filters
+    private DateTime fromDate = DateTime.Today;
+    private DateTime toDate = DateTime.Today;
+    private string transactionFilter = "all";
+    
+    // Summary values
+    private decimal openingBalance = 5000m;
+    private decimal totalCashIn = 0m;
+    private decimal totalCashOut = 0m;
+    private decimal currentBalance = 5000m;
+    
+    // Modal states
+    private bool showCashEntryModal = false;
+    private bool showCashOutModal = false;
+    
+    // Form objects
+    private CashTransaction cashEntry = new();
+    private CashTransaction cashOut = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCashTransactions();
+    }
+
+    private async Task LoadCashTransactions()
+    {
+        // Generate sample cash transactions
+        cashTransactions = new List<CashTransaction>
+        {
+            new CashTransaction
+            {
+                Id = 1,
+                TransactionDate = DateTime.Now.AddHours(-2),
+                Type = "IN",
+                Category = "Sales",
+                Description = "Bill payment - INV/2023/001",
+                ReferenceNumber = "INV/2023/001",
+                Amount = 1500m,
+                BalanceAfterTransaction = 6500m,
+                PaymentMethod = "Cash"
+            },
+            new CashTransaction
+            {
+                Id = 2,
+                TransactionDate = DateTime.Now.AddHours(-1),
+                Type = "OUT",
+                Category = "Purchase",
+                Description = "Stationery purchase",
+                ReferenceNumber = "PUR/2023/001",
+                Amount = 250m,
+                BalanceAfterTransaction = 6250m,
+                PaymentMethod = "Cash"
+            },
+            new CashTransaction
+            {
+                Id = 3,
+                TransactionDate = DateTime.Now.AddMinutes(-30),
+                Type = "IN",
+                Category = "Customer Payment",
+                Description = "Outstanding payment from John Doe",
+                ReferenceNumber = "PAY/2023/001",
+                Amount = 800m,
+                BalanceAfterTransaction = 7050m,
+                PaymentMethod = "UPI"
+            }
+        };
+
+        FilterTransactions();
+        CalculateSummary();
+        CalculateCategoryBreakdown();
+    }
+
+    private void FilterTransactions()
+    {
+        var filtered = cashTransactions.AsEnumerable();
+
+        // Filter by date range
+        filtered = filtered.Where(t => t.TransactionDate.Date >= fromDate.Date && t.TransactionDate.Date <= toDate.Date);
+
+        // Filter by transaction type
+        switch (transactionFilter)
+        {
+            case "in":
+                filtered = filtered.Where(t => t.Type == "IN");
+                break;
+            case "out":
+                filtered = filtered.Where(t => t.Type == "OUT");
+                break;
+            case "sale":
+                filtered = filtered.Where(t => t.Category == "Sales");
+                break;
+            case "expense":
+                filtered = filtered.Where(t => t.Type == "OUT");
+                break;
+        }
+
+        cashTransactions = filtered.OrderByDescending(t => t.TransactionDate).ToList();
+        StateHasChanged();
+    }
+
+    private void CalculateSummary()
+    {
+        totalCashIn = cashTransactions.Where(t => t.Type == "IN").Sum(t => t.Amount);
+        totalCashOut = cashTransactions.Where(t => t.Type == "OUT").Sum(t => t.Amount);
+        currentBalance = openingBalance + totalCashIn - totalCashOut;
+    }
+
+    private void CalculateCategoryBreakdown()
+    {
+        // Cash in by category
+        var cashInGroups = cashTransactions
+            .Where(t => t.Type == "IN")
+            .GroupBy(t => t.Category)
+            .Select(g => new CategorySummary
+            {
+                Category = g.Key,
+                Amount = g.Sum(t => t.Amount)
+            })
+            .OrderByDescending(c => c.Amount)
+            .ToList();
+
+        var totalIn = cashInGroups.Sum(c => c.Amount);
+        foreach (var category in cashInGroups)
+        {
+            category.Percentage = totalIn > 0 ? (double)(category.Amount / totalIn * 100) : 0;
+        }
+        cashInByCategory = cashInGroups;
+
+        // Cash out by category
+        var cashOutGroups = cashTransactions
+            .Where(t => t.Type == "OUT")
+            .GroupBy(t => t.Category)
+            .Select(g => new CategorySummary
+            {
+                Category = g.Key,
+                Amount = g.Sum(t => t.Amount)
+            })
+            .OrderByDescending(c => c.Amount)
+            .ToList();
+
+        var totalOut = cashOutGroups.Sum(c => c.Amount);
+        foreach (var category in cashOutGroups)
+        {
+            category.Percentage = totalOut > 0 ? (double)(category.Amount / totalOut * 100) : 0;
+        }
+        cashOutByCategory = cashOutGroups;
+    }
+
+    private void ShowCashEntryModal()
+    {
+        cashEntry = new CashTransaction
+        {
+            TransactionDate = DateTime.Now,
+            Type = "IN",
+            PaymentMethod = "Cash"
+        };
+        showCashEntryModal = true;
+    }
+
+    private void ShowCashOutModal()
+    {
+        cashOut = new CashTransaction
+        {
+            TransactionDate = DateTime.Now,
+            Type = "OUT",
+            PaymentMethod = "Cash"
+        };
+        showCashOutModal = true;
+    }
+
+    private async Task SaveCashEntry()
+    {
+        if (cashEntry.Amount > 0 && !string.IsNullOrEmpty(cashEntry.Category))
+        {
+            cashEntry.Id = cashTransactions.Max(t => t.Id) + 1;
+            cashEntry.BalanceAfterTransaction = currentBalance + cashEntry.Amount;
+            cashTransactions.Insert(0, cashEntry);
+            
+            CloseCashEntryModal();
+            CalculateSummary();
+            CalculateCategoryBreakdown();
+            StateHasChanged();
+        }
+    }
+
+    private async Task SaveCashOut()
+    {
+        if (cashOut.Amount > 0 && !string.IsNullOrEmpty(cashOut.Category))
+        {
+            cashOut.Id = cashTransactions.Max(t => t.Id) + 1;
+            cashOut.BalanceAfterTransaction = currentBalance - cashOut.Amount;
+            cashTransactions.Insert(0, cashOut);
+            
+            CloseCashOutModal();
+            CalculateSummary();
+            CalculateCategoryBreakdown();
+            StateHasChanged();
+        }
+    }
+
+    private void CloseCashEntryModal()
+    {
+        showCashEntryModal = false;
+        cashEntry = new CashTransaction();
+    }
+
+    private void CloseCashOutModal()
+    {
+        showCashOutModal = false;
+        cashOut = new CashTransaction();
+    }
+
+    private void ViewTransaction(CashTransaction transaction)
+    {
+        // Navigate to transaction details or show details modal
+        Console.WriteLine($"Viewing transaction: {transaction.Id}");
+    }
+
+    private async Task DeleteTransaction(CashTransaction transaction)
+    {
+        if (confirm($"Are you sure you want to delete this transaction?"))
+        {
+            cashTransactions.Remove(transaction);
+            CalculateSummary();
+            CalculateCategoryBreakdown();
+            StateHasChanged();
+        }
+    }
+
+    private async Task ExportCashReport()
+    {
+        // Export cash report to Excel/PDF
+        Console.WriteLine("Exporting cash report...");
+    }
+}
+
+// Helper classes
+public class CashTransaction
+{
+    public int Id { get; set; }
+    public DateTime TransactionDate { get; set; }
+    public string Type { get; set; } = ""; // IN or OUT
+    public string Category { get; set; } = "";
+    public string Description { get; set; } = "";
+    public string ReferenceNumber { get; set; } = "";
+    public decimal Amount { get; set; }
+    public decimal BalanceAfterTransaction { get; set; }
+    public string PaymentMethod { get; set; } = "";
+}
+
+public class CategorySummary
+{
+    public string Category { get; set; } = "";
+    public decimal Amount { get; set; }
+    public double Percentage { get; set; }
+}

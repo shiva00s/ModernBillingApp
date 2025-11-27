@@ -1,0 +1,118 @@
+﻿@page "/stock-report"
+@using Microsoft.AspNetCore.Components.Forms
+@inject ReportService reportService
+@inject ProductService productService
+
+<h3>Stock-In Report</h3>
+<p>Shows all inventory added to your store within a selected date range.</p>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label>From Date</label>
+                <InputDate @bind-value="fromDate" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label>To Date</label>
+                <InputDate @bind-value="toDate" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label>Filter by Product</label>
+                <InputSelect @bind-value="filterProductId" class="form-select">
+                    <option value="0">-- All Products --</option>
+                    @if (productList != null)
+                    {
+                        @foreach (var p in productList)
+                        {
+                            <option value="@p.Id">@p.PName</option>
+                        }
+                    }
+                </InputSelect>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary" @onclick="LoadReport">Load Report</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped table-sm">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Product (PID)</th>
+            <th>Product Name</th>
+            <th>Qty Added</th>
+            <th>Purchase Price</th>
+            <th>Batch No.</th>
+            <th>Supplier</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (stockLog == null)
+        {
+            <tr><td colspan="7">Loading...</td></tr>
+        }
+        else if (!filteredStockLog.Any())
+        {
+            <tr><td colspan="7">No stock-in data found for this period.</td></tr>
+        }
+        else
+        {
+            @foreach (var entry in filteredStockLog)
+            {
+                <tr>
+                    <td>@entry.Date.ToShortDateString()</td>
+                    <td>@entry.Product?.PID</td>
+                    <td>@entry.Product?.PName</td>
+                    <td>@entry.QtyAdded</td>
+                    <td>@entry.PPrice.ToString("0.00")</td>
+                    <td>@entry.BatchNo</td>
+                    <td>@entry.Supplier?.VName</td>
+                </tr>
+            }
+            <tr class="table-info">
+                <td colspan="3" class="text-end fw-bold">Total:</td>
+                <td class="fw-bold">@filteredStockLog.Sum(item => item.QtyAdded)</td>
+                <td class="fw-bold">@filteredStockLog.Sum(item => item.PPrice * (decimal)item.QtyAdded).ToString("0.00")</td>
+                <td colspan="2"></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private DateTime fromDate = DateTime.Today;
+    private DateTime toDate = DateTime.Today.AddDays(1).AddTicks(-1); // End of today
+
+    private List<Product> productList = new List<Product>();
+    private List<StockLedger> stockLog = new List<StockLedger>();
+    private List<StockLedger> filteredStockLog = new List<StockLedger>();
+    private int filterProductId = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        productList = await productService.GetProducts();
+        await LoadReport();
+    }
+
+    private async Task LoadReport()
+    {
+        stockLog = await reportService.GetStockLedgerReport(fromDate, toDate);
+        FilterReport();
+    }
+
+    private void FilterReport()
+    {
+        if (filterProductId == 0)
+        {
+            filteredStockLog = stockLog; // No filter
+        }
+        else
+        {
+            // Filter by selected product
+            filteredStockLog = stockLog.Where(s => s.ProductId == filterProductId).ToList();
+        }
+    }
+}

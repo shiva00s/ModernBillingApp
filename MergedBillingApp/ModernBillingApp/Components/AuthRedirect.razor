@@ -1,0 +1,15 @@
+@using ModernBillingApp.Services
+@inject SessionService SessionService
+@inject NavigationManager NavigationManager
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!SessionService.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+}
+
+    

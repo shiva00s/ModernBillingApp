@@ -1,0 +1,759 @@
+@page "/settings"
+@using MergeModernBilling.Models
+@using MergeModernBilling.Services
+@inject NavigationManager NavigationManager
+
+<PageTitle>Settings</PageTitle>
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3>System Settings</h3>
+        </div>
+    </div>
+
+    <!-- Settings Navigation -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body p-0">
+                    <nav class="nav nav-pills flex-column">
+                        <a class="nav-link @(activeTab == "general" ? "active" : "")" @onclick="() => SetActiveTab("general")">
+                            <i class="fas fa-cog"></i> General Settings
+                        </a>
+                        <a class="nav-link @(activeTab == "billing" ? "active" : "")" @onclick="() => SetActiveTab("billing")">
+                            <i class="fas fa-file-invoice"></i> Billing Settings
+                        </a>
+                        <a class="nav-link @(activeTab == "tax" ? "active" : "")" @onclick="() => SetActiveTab("tax")">
+                            <i class="fas fa-percentage"></i> Tax Settings
+                        </a>
+                        <a class="nav-link @(activeTab == "users" ? "active" : "")" @onclick="() => SetActiveTab("users")">
+                            <i class="fas fa-users"></i> User Management
+                        </a>
+                        <a class="nav-link @(activeTab == "backup" ? "active" : "")" @onclick="() => SetActiveTab("backup")">
+                            <i class="fas fa-database"></i> Backup & Restore
+                        </a>
+                        <a class="nav-link @(activeTab == "system" ? "active" : "")" @onclick="() => SetActiveTab("system")">
+                            <i class="fas fa-server"></i> System Info
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <!-- General Settings -->
+            @if (activeTab == "general")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5>General Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Shop Name</label>
+                                    <input type="text" class="form-control" @bind="generalSettings.ShopName" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Shop Address</label>
+                                    <input type="text" class="form-control" @bind="generalSettings.ShopAddress" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" @bind="generalSettings.PhoneNumber" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" @bind="generalSettings.Email" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">GST Number</label>
+                                    <input type="text" class="form-control" @bind="generalSettings.GSTNumber" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Currency</label>
+                                    <select class="form-select" @bind="generalSettings.Currency">
+                                        <option value="INR">Indian Rupee (₹)</option>
+                                        <option value="USD">US Dollar ($)</option>
+                                        <option value="EUR">Euro (€)</option>
+                                        <option value="GBP">British Pound (£)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Logo URL</label>
+                                <input type="url" class="form-control" @bind="generalSettings.LogoUrl" placeholder="https://example.com/logo.png" />
+                            </div>
+                            <button type="button" class="btn btn-primary" @onclick="SaveGeneralSettings">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            <!-- Billing Settings -->
+            @if (activeTab == "billing")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Billing Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Bill Prefix</label>
+                                    <input type="text" class="form-control" @bind="billingSettings.BillPrefix" placeholder="INV" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Starting Bill Number</label>
+                                    <input type="number" class="form-control" @bind="billingSettings.StartingBillNumber" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Default Payment Method</label>
+                                    <select class="form-select" @bind="billingSettings.DefaultPaymentMethod">
+                                        <option value="Cash">Cash</option>
+                                        <option value="Card">Card</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Low Stock Alert Level</label>
+                                    <input type="number" class="form-control" @bind="billingSettings.LowStockAlertLevel" />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" @bind="billingSettings.EnableTax" />
+                                    <label class="form-check-label">Enable Tax Calculation</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" @bind="billingSettings.PrintBillAfterSale" />
+                                    <label class="form-check-label">Print Bill Automatically After Sale</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" @bind="billingSettings.EnableSMS" />
+                                    <label class="form-check-label">Enable SMS Notifications</label>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary" @onclick="SaveBillingSettings">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            <!-- Tax Settings -->
+            @if (activeTab == "tax")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Tax Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Default Tax Rate (%)</label>
+                                    <input type="number" class="form-control" @bind="taxSettings.DefaultTaxRate" step="0.01" />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Tax Name</label>
+                                    <input type="text" class="form-control" @bind="taxSettings.TaxName" placeholder="GST" />
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" @bind="taxSettings.TaxIncluded" />
+                                    <label class="form-check-label">Tax Included in Product Price</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" @bind="taxSettings.RoundTax" />
+                                    <label class="form-check-label">Round Tax Amount</label>
+                                </div>
+                            </div>
+                            
+                            <h6 class="mt-4 mb-3">Tax Rates by Category</h6>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Tax Rate (%)</th>
+                                            <th>Active</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var category in taxSettings.CategoryTaxes)
+                                        {
+                                            <tr>
+                                                <td>@category.Category</td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm" 
+                                                           @bind="category.Rate" step="0.01" style="width: 100px;" />
+                                                </td>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" @bind="category.IsActive" />
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary" @onclick="SaveTaxSettings">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            <!-- User Management -->
+            @if (activeTab == "users")
+            {
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5>User Management</h5>
+                        <button class="btn btn-primary btn-sm" @onclick="ShowAddUserModal">
+                            <i class="fas fa-plus"></i> Add User
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Role</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in users)
+                                    {
+                                        <tr>
+                                            <td>@user.Username</td>
+                                            <td>@user.FullName</td>
+                                            <td>
+                                                <span class="badge bg-@(user.Role == "Admin" ? "danger" : "primary")">
+                                                    @user.Role
+                                                </span>
+                                            </td>
+                                            <td>@user.Email</td>
+                                            <td>
+                                                <span class="badge bg-@(user.IsActive ? "success" : "secondary")">
+                                                    @(user.IsActive ? "Active" : "Inactive")
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" @onclick="() => EditUser(user)">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteUser(user)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Backup & Restore -->
+            @if (activeTab == "backup")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Backup & Restore</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Backup Data</h6>
+                                <p class="text-muted">Create a backup of your business data</p>
+                                <button class="btn btn-primary" @onclick="CreateBackup">
+                                    <i class="fas fa-download"></i> Create Backup
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Restore Data</h6>
+                                <p class="text-muted">Restore data from a backup file</p>
+                                <input type="file" class="form-control mb-2" @onchange="OnBackupFileSelected" />
+                                <button class="btn btn-warning" @onclick="RestoreBackup">
+                                    <i class="fas fa-upload"></i> Restore Backup
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4" />
+                        
+                        <h6>Recent Backups</h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>File Name</th>
+                                        <th>Size</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var backup in recentBackups)
+                                    {
+                                        <tr>
+                                            <td>@backup.Date.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@backup.FileName</td>
+                                            <td>@backup.Size</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" @onclick="() => DownloadBackup(backup)">
+                                                    <i class="fas fa-download"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteBackup(backup)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- System Info -->
+            @if (activeTab == "system")
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h5>System Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Application</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>Version</td>
+                                        <td>@systemInfo.Version</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Build Date</td>
+                                        <td>@systemInfo.BuildDate.ToString("dd/MM/yyyy")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Environment</td>
+                                        <td>@systemInfo.Environment</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Database</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>Type</td>
+                                        <td>@systemInfo.DatabaseType</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Version</td>
+                                        <td>@systemInfo.DatabaseVersion</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size</td>
+                                        <td>@systemInfo.DatabaseSize</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h6>System Health</h6>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h5>Database</h5>
+                                            <i class="fas fa-check-circle fa-2x"></i>
+                                            <p>Healthy</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-body text-center">
+                                            <h5>Storage</h5>
+                                            <i class="fas fa-check-circle fa-2x"></i>
+                                            <p>Available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-warning text-white">
+                                        <div class="card-body text-center">
+                                            <h5>Updates</h5>
+                                            <i class="fas fa-exclamation-triangle fa-2x"></i>
+                                            <p>Available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit User Modal -->
+@if (showUserModal)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(isEditMode ? "Edit User" : "Add New User")</h5>
+                    <button type="button" class="btn-close" @onclick="CloseUserModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input class="form-control" @bind="currentUser.Username" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input class="form-control" @bind="currentUser.FullName" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" @bind="currentUser.Email" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-select" @bind="currentUser.Role">
+                                <option value="Admin">Admin</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Cashier">Cashier</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" @bind="currentUser.Password" />
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" @bind="currentUser.IsActive" />
+                                <label class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseUserModal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveUser">
+                        @(isEditMode ? "Update" : "Add") User
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string activeTab = "general";
+    private bool showUserModal = false;
+    private bool isEditMode = false;
+
+    // Settings objects
+    private GeneralSettings generalSettings = new();
+    private BillingSettings billingSettings = new();
+    private TaxSettings taxSettings = new();
+    private List<User> users = new();
+    private User currentUser = new();
+    private List<BackupInfo> recentBackups = new();
+    private SystemInfo systemInfo = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSettings();
+        await LoadUsers();
+        await LoadSystemInfo();
+    }
+
+    private async Task LoadSettings()
+    {
+        // Load settings from storage or API
+        generalSettings = new GeneralSettings
+        {
+            ShopName = "Modern Billing Shop",
+            ShopAddress = "123 Main Street, City",
+            PhoneNumber = "+91 9876543210",
+            Email = "shop@example.com",
+            GSTNumber = "GST1234567890",
+            Currency = "INR",
+            LogoUrl = ""
+        };
+
+        billingSettings = new BillingSettings
+        {
+            BillPrefix = "INV",
+            StartingBillNumber = 1001,
+            DefaultPaymentMethod = "Cash",
+            LowStockAlertLevel = 10,
+            EnableTax = true,
+            PrintBillAfterSale = false,
+            EnableSMS = false
+        };
+
+        taxSettings = new TaxSettings
+        {
+            DefaultTaxRate = 18m,
+            TaxName = "GST",
+            TaxIncluded = false,
+            RoundTax = true,
+            CategoryTaxes = new List<CategoryTax>
+            {
+                new CategoryTax { Category = "Electronics", Rate = 18, IsActive = true },
+                new CategoryTax { Category = "Clothing", Rate = 5, IsActive = true },
+                new CategoryTax { Category = "Food", Rate = 0, IsActive = true },
+                new CategoryTax { Category = "Books", Rate = 0, IsActive = true },
+                new CategoryTax { Category = "Other", Rate = 18, IsActive = true }
+            }
+        };
+    }
+
+    private async Task LoadUsers()
+    {
+        users = new List<User>
+        {
+            new User { Id = 1, Username = "admin", FullName = "Administrator", Role = "Admin", Email = "admin@shop.com", IsActive = true },
+            new User { Id = 2, Username = "manager", FullName = "Store Manager", Role = "Manager", Email = "manager@shop.com", IsActive = true },
+            new User { Id = 3, Username = "cashier", FullName = "Cashier", Role = "Cashier", Email = "cashier@shop.com", IsActive = true }
+        };
+    }
+
+    private async Task LoadSystemInfo()
+    {
+        systemInfo = new SystemInfo
+        {
+            Version = "1.0.0",
+            BuildDate = DateTime.Now.AddDays(-30),
+            Environment = "Production",
+            DatabaseType = "SQLite",
+            DatabaseVersion = "3.36.0",
+            DatabaseSize = "2.5 MB"
+        };
+
+        recentBackups = new List<BackupInfo>
+        {
+            new BackupInfo { Date = DateTime.Now.AddDays(-1), FileName = "backup_20231124.db", Size = "2.5 MB" },
+            new BackupInfo { Date = DateTime.Now.AddDays(-7), FileName = "backup_20231118.db", Size = "2.3 MB" },
+            new BackupInfo { Date = DateTime.Now.AddDays(-14), FileName = "backup_20231111.db", Size = "2.1 MB" }
+        };
+    }
+
+    private void SetActiveTab(string tab)
+    {
+        activeTab = tab;
+        StateHasChanged();
+    }
+
+    private async Task SaveGeneralSettings()
+    {
+        // Save general settings
+        Console.WriteLine("Saving general settings...");
+    }
+
+    private async Task SaveBillingSettings()
+    {
+        // Save billing settings
+        Console.WriteLine("Saving billing settings...");
+    }
+
+    private async Task SaveTaxSettings()
+    {
+        // Save tax settings
+        Console.WriteLine("Saving tax settings...");
+    }
+
+    private void ShowAddUserModal()
+    {
+        currentUser = new User { IsActive = true };
+        isEditMode = false;
+        showUserModal = true;
+    }
+
+    private void EditUser(User user)
+    {
+        currentUser = new User
+        {
+            Id = user.Id,
+            Username = user.Username,
+            FullName = user.FullName,
+            Email = user.Email,
+            Role = user.Role,
+            IsActive = user.IsActive
+        };
+        isEditMode = true;
+        showUserModal = true;
+    }
+
+    private async Task DeleteUser(User user)
+    {
+        if (confirm($"Are you sure you want to delete user {user.Username}?"))
+        {
+            users.Remove(user);
+            StateHasChanged();
+        }
+    }
+
+    private async Task SaveUser()
+    {
+        if (isEditMode)
+        {
+            var existingUser = users.FirstOrDefault(u => u.Id == currentUser.Id);
+            if (existingUser != null)
+            {
+                existingUser.Username = currentUser.Username;
+                existingUser.FullName = currentUser.FullName;
+                existingUser.Email = currentUser.Email;
+                existingUser.Role = currentUser.Role;
+                existingUser.IsActive = currentUser.IsActive;
+            }
+        }
+        else
+        {
+            currentUser.Id = users.Max(u => u.Id) + 1;
+            users.Add(currentUser);
+        }
+        CloseUserModal();
+    }
+
+    private void CloseUserModal()
+    {
+        showUserModal = false;
+        currentUser = new User();
+    }
+
+    private async Task CreateBackup()
+    {
+        Console.WriteLine("Creating backup...");
+        // Implement backup creation logic
+    }
+
+    private async Task RestoreBackup()
+    {
+        Console.WriteLine("Restoring backup...");
+        // Implement backup restore logic
+    }
+
+    private void OnBackupFileSelected(ChangeEventArgs e)
+    {
+        Console.WriteLine("Backup file selected");
+        // Handle file selection
+    }
+
+    private async Task DownloadBackup(BackupInfo backup)
+    {
+        Console.WriteLine($"Downloading {backup.FileName}");
+        // Implement download logic
+    }
+
+    private async Task DeleteBackup(BackupInfo backup)
+    {
+        if (confirm($"Are you sure you want to delete backup {backup.FileName}?"))
+        {
+            recentBackups.Remove(backup);
+            StateHasChanged();
+        }
+    }
+}
+
+// Helper classes
+public class GeneralSettings
+{
+    public string ShopName { get; set; } = "";
+    public string ShopAddress { get; set; } = "";
+    public string PhoneNumber { get; set; } = "";
+    public string Email { get; set; } = "";
+    public string GSTNumber { get; set; } = "";
+    public string Currency { get; set; } = "INR";
+    public string LogoUrl { get; set; } = "";
+}
+
+public class BillingSettings
+{
+    public string BillPrefix { get; set; } = "INV";
+    public int StartingBillNumber { get; set; } = 1001;
+    public string DefaultPaymentMethod { get; set; } = "Cash";
+    public int LowStockAlertLevel { get; set; } = 10;
+    public bool EnableTax { get; set; } = true;
+    public bool PrintBillAfterSale { get; set; } = false;
+    public bool EnableSMS { get; set; } = false;
+}
+
+public class TaxSettings
+{
+    public decimal DefaultTaxRate { get; set; } = 18m;
+    public string TaxName { get; set; } = "GST";
+    public bool TaxIncluded { get; set; } = false;
+    public bool RoundTax { get; set; } = true;
+    public List<CategoryTax> CategoryTaxes { get; set; } = new();
+}
+
+public class CategoryTax
+{
+    public string Category { get; set; } = "";
+    public decimal Rate { get; set; }
+    public bool IsActive { get; set; } = true;
+}
+
+public class User
+{
+    public int Id { get; set; }
+    public string Username { get; set; } = "";
+    public string FullName { get; set; } = "";
+    public string Email { get; set; } = "";
+    public string Role { get; set; } = "";
+    public string Password { get; set; } = "";
+    public bool IsActive { get; set; } = true;
+}
+
+public class BackupInfo
+{
+    public DateTime Date { get; set; }
+    public string FileName { get; set; } = "";
+    public string Size { get; set; } = "";
+}
+
+public class SystemInfo
+{
+    public string Version { get; set; } = "";
+    public DateTime BuildDate { get; set; }
+    public string Environment { get; set; } = "";
+    public string DatabaseType { get; set; } = "";
+    public string DatabaseVersion { get; set; } = "";
+    public string DatabaseSize { get; set; } = "";
+}

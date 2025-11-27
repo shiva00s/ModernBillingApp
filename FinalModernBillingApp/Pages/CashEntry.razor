@@ -1,0 +1,299 @@
+@page "/cash-entry"
+@using ModernBillingApp.Services
+@using ModernBillingApp.Models
+@inject ExpenseService expenseService
+@inject NavigationManager navigationManager
+@inject ToastService toastService
+
+<PageTitle>Cash Entry</PageTitle>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3><span class="oi oi-dollar me-2"></span>Cash Entry Management</h3>
+        <button class="btn btn-primary" @onclick="ShowAddForm">
+            <span class="oi oi-plus me-1"></span>New Entry
+        </button>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label class="form-label">From Date</label>
+                    <InputDate @bind-Value="filterFromDate" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">To Date</label>
+                    <InputDate @bind-Value="filterToDate" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Type</label>
+                    <select @bind="filterType" class="form-select form-select-sm">
+                        <option value="">All</option>
+                        <option value="Income">Income</option>
+                        <option value="Expense">Expense</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button class="btn btn-sm btn-outline-primary w-100" @onclick="LoadEntries">
+                        <span class="oi oi-magnifying-glass me-1"></span>Filter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-2 mb-3">
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Total Income</h6>
+                    <h4>₹@totalIncome.ToString("N2")</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Total Expenses</h6>
+                    <h4>₹@totalExpenses.ToString("N2")</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Net Balance</h6>
+                    <h4>₹@((totalIncome - totalExpenses).ToString("N2"))</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Form -->
+    @if (showForm)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">@(selectedEntry?.Id > 0 ? "Edit" : "Add") Cash Entry</h5>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@entryForm" OnValidSubmit="@SaveEntry">
+                    <DataAnnotationsValidator />
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label class="form-label">Entry Name <span class="text-danger">*</span></label>
+                            <InputText @bind-Value="entryForm.CEName" class="form-control form-control-sm" />
+                            <ValidationMessage For="@(() => entryForm.CEName)" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Type <span class="text-danger">*</span></label>
+                            <InputSelect @bind-Value="entryForm.CEType" class="form-select form-select-sm">
+                                <option value="">Select Type</option>
+                                <option value="Income">Income</option>
+                                <option value="Expense">Expense</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => entryForm.CEType)" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date <span class="text-danger">*</span></label>
+                            <InputDate @bind-Value="entryForm.Date" class="form-control form-control-sm" />
+                            <ValidationMessage For="@(() => entryForm.Date)" />
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Amount <span class="text-danger">*</span></label>
+                            <InputNumber @bind-Value="entryForm.Amount" class="form-control form-control-sm" />
+                            <ValidationMessage For="@(() => entryForm.Amount)" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Remarks</label>
+                            <InputTextArea @bind-Value="entryForm.Remark" class="form-control form-control-sm" rows="2" />
+                        </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-sm btn-primary me-2">
+                                <span class="oi oi-check me-1"></span>Save
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary" @onclick="CancelForm">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    }
+
+    <!-- Entries Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive" style="max-height: 500px;">
+                <table class="table table-sm table-hover">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Remarks</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (entries == null || !entries.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No entries found</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var entry in entries)
+                            {
+                                <tr>
+                                    <td>@entry.Date.ToString("dd MMM yyyy")</td>
+                                    <td>@entry.CEName</td>
+                                    <td>
+                                        <span class="badge @(entry.CEType == "Income" ? "bg-success" : "bg-danger")">
+                                            @entry.CEType
+                                        </span>
+                                    </td>
+                                    <td>₹@entry.Amount.ToString("N2")</td>
+                                    <td>@entry.Remark</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" @onclick="() => EditEntry(entry)">
+                                            <span class="oi oi-pencil"></span>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteEntry(entry)">
+                                            <span class="oi oi-trash"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<ModernBillingApp.Models.CashEntry>? entries;
+    private ModernBillingApp.Models.CashEntry? selectedEntry;
+    private bool showForm = false;
+    private DateTime filterFromDate = DateTime.Today.AddDays(-30);
+    private DateTime filterToDate = DateTime.Today;
+    private string filterType = "";
+
+    private CashEntryForm entryForm = new();
+
+    private decimal totalIncome = 0;
+    private decimal totalExpenses = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEntries();
+    }
+
+    private async Task LoadEntries()
+    {
+        entries = await expenseService.GetCashEntries(filterFromDate, filterToDate, filterType);
+        CalculateTotals();
+    }
+
+    private void CalculateTotals()
+    {
+        if (entries != null)
+        {
+            totalIncome = entries.Where(e => e.CEType == "Income").Sum(e => e.Amount);
+            totalExpenses = entries.Where(e => e.CEType == "Expense").Sum(e => e.Amount);
+        }
+    }
+
+    private void ShowAddForm()
+    {
+        selectedEntry = null;
+        entryForm = new CashEntryForm
+        {
+            Date = DateTime.Today
+        };
+        showForm = true;
+    }
+
+    private void EditEntry(ModernBillingApp.Models.CashEntry entry)
+    {
+        selectedEntry = entry;
+        entryForm = new CashEntryForm
+        {
+            Id = entry.Id,
+            CEName = entry.CEName,
+            CEType = entry.CEType,
+            Date = entry.Date,
+            Amount = entry.Amount,
+            Remark = entry.Remark
+        };
+        showForm = true;
+    }
+
+    private async Task SaveEntry()
+    {
+        try
+        {
+            if (selectedEntry?.Id > 0)
+            {
+                await expenseService.UpdateCashEntry(entryForm.Id, entryForm.CEName, entryForm.CEType, entryForm.Date, entryForm.Amount, entryForm.Remark);
+                toastService.ShowSuccess("Cash entry updated successfully!");
+            }
+            else
+            {
+                await expenseService.AddCashEntry(entryForm.CEName, entryForm.CEType, entryForm.Date, entryForm.Amount, entryForm.Remark);
+                toastService.ShowSuccess("Cash entry added successfully!");
+            }
+            showForm = false;
+            await LoadEntries();
+        }
+        catch (Exception ex)
+        {
+            toastService.ShowError($"Error: {ex.Message}");
+        }
+    }
+
+    private void CancelForm()
+    {
+        showForm = false;
+        selectedEntry = null;
+        entryForm = new();
+    }
+
+    private async Task DeleteEntry(ModernBillingApp.Models.CashEntry entry)
+    {
+        // Add confirmation dialog here
+        try
+        {
+            await expenseService.DeleteCashEntry(entry.Id);
+            toastService.ShowSuccess("Cash entry deleted successfully!");
+            await LoadEntries();
+        }
+        catch (Exception ex)
+        {
+            toastService.ShowError($"Error: {ex.Message}");
+        }
+    }
+
+    public class CashEntryForm
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Entry name is required")]
+        public string? CEName { get; set; }
+        [Required(ErrorMessage = "Type is required")]
+        public string? CEType { get; set; }
+        [Required]
+        public DateTime Date { get; set; } = DateTime.Today;
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
+        public decimal Amount { get; set; }
+        public string? Remark { get; set; }
+    }
+}

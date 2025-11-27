@@ -1,0 +1,1006 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\Project\\ModernBillingApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\components\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\index.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\dashboardservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\components\\_imports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\databasebackup.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\databasebackup.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\customerreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\customerreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\billingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\billingpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\bill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\bill.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108143711_FinalAppStructure.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ModernBillingApp\\Migrations\\20251108143711_FinalAppStructure.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\databaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\databaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\stockreturnpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\stockreturnpage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\salesreports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\salesreports.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\stockreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\stockreport.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\billprinta5.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\billprinta5.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\billprinta4.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\billprinta4.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\billprintreceipt.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\billprintreceipt.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\customermanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\customermanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\shopsettingspage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\shopsettingspage.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\billingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\billingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\emptylayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\emptylayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\wwwroot\\js\\print.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\wwwroot\\js\\print.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\migrations\\20251108131933_addshopsettingstable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\migrations\\20251108131933_addshopsettingstable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\settingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\settingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\shopsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\shopsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\reportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\reportservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\profitreporttab.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\profitreporttab.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\saleslogtab.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\saleslogtab.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\expenses.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\expenses.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108125456_AddCashEntryTable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ModernBillingApp\\Migrations\\20251108125456_AddCashEntryTable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\expenseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\expenseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\cashentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\cashentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108124608_AddBillingTables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ModernBillingApp\\Migrations\\20251108124608_AddBillingTables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\stockreturn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\stockreturn.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\stockin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\stockin.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\productcatalog.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\productcatalog.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108122540_AddProductAndStockTables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ModernBillingApp\\Migrations\\20251108122540_AddProductAndStockTables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\suppliermanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\suppliermanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108122015_AddSupplierTable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ModernBillingApp\\Migrations\\20251108122015_AddSupplierTable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\customerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\supplierservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\supplierservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\supplier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\supplier.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108121420_AddCustomerAndPaymentTables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ModernBillingApp\\Migrations\\20251108121420_AddCustomerAndPaymentTables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\customer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\employeemanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\employeemanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108120908_AddEmployeeTable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ModernBillingApp\\Migrations\\20251108120908_AddEmployeeTable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\services\\employeeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\usermanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\usermanagement.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\pages\\login.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\migrations\\20251108114449_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\migrations\\20251108114449_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|f:\\project\\modernbillingapp\\modernbillingapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{FE20666C-2C24-490C-9AA1-EAA859DE6ACA}|ModernBillingApp\\ModernBillingApp.csproj|solutionrelative:modernbillingapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BillingPage.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillingPage.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\BillingPage.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillingPage.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\BillingPage.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAOUBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:48:16.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CustomerReport.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\CustomerReport.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\CustomerReport.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\CustomerReport.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\CustomerReport.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:14:38.117Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_Imports.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Components\\_Imports.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Components\\_Imports.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Components\\_Imports.razor",
+              "RelativeToolTip": "ModernBillingApp\\Components\\_Imports.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T14:46:43.457Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\Index.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\Index.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\Index.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\Index.razor",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAA4AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:57:44.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NavMenu.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Components\\Layout\\NavMenu.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Components\\Layout\\NavMenu.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Components\\Layout\\NavMenu.razor",
+              "RelativeToolTip": "ModernBillingApp\\Components\\Layout\\NavMenu.razor",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAYwIwAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T15:15:53.983Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Program.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Program.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Program.cs",
+              "RelativeToolTip": "ModernBillingApp\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T11:41:06.733Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Data\\AppDbContext.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "ModernBillingApp\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAA3wBgAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T11:40:04.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DashboardService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\DashboardService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\DashboardService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\DashboardService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\DashboardService.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAIwC4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:56:39.66Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "ModernBillingApp\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T15:16:43.455Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DatabaseBackup.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\DatabaseBackup.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\DatabaseBackup.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\DatabaseBackup.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\DatabaseBackup.razor",
+              "ViewState": "AgIAADwAAAAAAAAAAAAiwEMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:42:52.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "SalesReports.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\SalesReports.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\SalesReports.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\SalesReports.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\SalesReports.razor",
+              "ViewState": "AgIAABsAAAAAAAAAAAAowCwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:02:09.957Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "StockReport.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\StockReport.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\StockReport.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\StockReport.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\StockReport.razor",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAwwHUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:09:57.761Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\AuthService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\AuthService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\AuthService.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAqwDcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T11:45:32.613Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Bill.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Bill.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\Bill.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Bill.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\Bill.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAzwE0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:43:20.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "20251108143711_FinalAppStructure.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108143711_FinalAppStructure.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108143711_FinalAppStructure.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108143711_FinalAppStructure.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108143711_FinalAppStructure.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T14:37:11.529Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "BillPrintA4.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillPrintA4.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\BillPrintA4.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillPrintA4.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\BillPrintA4.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAO4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:46:06.306Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "BillPrintA5.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillPrintA5.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\BillPrintA5.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillPrintA5.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\BillPrintA5.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:46:37.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "DatabaseService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\DatabaseService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\DatabaseService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\DatabaseService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\DatabaseService.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAwwCcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T13:36:03.741Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "StockReturnPage.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\StockReturnPage.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\StockReturnPage.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\StockReturnPage.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\StockReturnPage.razor",
+              "ViewState": "AgIAADQAAAAAAAAAAAAiwEYAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:37:58.518Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "BillPrintReceipt.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillPrintReceipt.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\BillPrintReceipt.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\BillPrintReceipt.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\BillPrintReceipt.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:23:47.785Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ShopSettingsPage.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\ShopSettingsPage.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:20:03.84Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "CustomerManagement.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\CustomerManagement.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\CustomerManagement.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\CustomerManagement.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\CustomerManagement.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:15:52.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "BillingService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\BillingService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\BillingService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\BillingService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\BillingService.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAwwFwAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:45:27.896Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "EmptyLayout.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\EmptyLayout.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\EmptyLayout.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\EmptyLayout.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\EmptyLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:28:36.113Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "print.js",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\wwwroot\\js\\print.js",
+              "RelativeDocumentMoniker": "ModernBillingApp\\wwwroot\\js\\print.js",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\wwwroot\\js\\print.js",
+              "RelativeToolTip": "ModernBillingApp\\wwwroot\\js\\print.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-08T13:21:58.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "20251108131933_AddShopSettingsTable.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108131933_AddShopSettingsTable.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108131933_AddShopSettingsTable.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108131933_AddShopSettingsTable.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108131933_AddShopSettingsTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T13:19:33.65Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "SettingsService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\SettingsService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\SettingsService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\SettingsService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\SettingsService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAwwCcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T13:18:04.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "ShopSettings.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ShopSettings.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\ShopSettings.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ShopSettings.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\ShopSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T13:17:17.012Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "ReportService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ReportService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\ReportService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ReportService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\ReportService.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAwwEoAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T13:00:03.802Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "ProfitReportTab.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\ProfitReportTab.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\ProfitReportTab.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\ProfitReportTab.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\ProfitReportTab.razor",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAACwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:05:27.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "SalesLogTab.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\SalesLogTab.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\SalesLogTab.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\SalesLogTab.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\SalesLogTab.razor",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAACgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T13:04:58.098Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "Expenses.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\Expenses.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\Expenses.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\Expenses.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\Expenses.razor",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAwwL4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:55:38.919Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "20251108125456_AddCashEntryTable.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108125456_AddCashEntryTable.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108125456_AddCashEntryTable.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108125456_AddCashEntryTable.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108125456_AddCashEntryTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:54:57.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ExpenseService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ExpenseService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\ExpenseService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ExpenseService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\ExpenseService.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAowCkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:54:05.455Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "CashEntry.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\CashEntry.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\CashEntry.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\CashEntry.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\CashEntry.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:53:27.205Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "20251108124608_AddBillingTables.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108124608_AddBillingTables.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108124608_AddBillingTables.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108124608_AddBillingTables.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108124608_AddBillingTables.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:46:09.047Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "StockReturn.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\StockReturn.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\StockReturn.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\StockReturn.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\StockReturn.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:31:07.146Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "StockIn.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\StockIn.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\StockIn.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\StockIn.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\StockIn.razor",
+              "ViewState": "AgIAACUAAAAAAAAAAAAwwJ8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:29:22.569Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "ProductCatalog.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\ProductCatalog.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\ProductCatalog.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\ProductCatalog.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\ProductCatalog.razor",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAwwLkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:27:29.682Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "Product.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\Product.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Product.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\Product.cs",
+              "ViewState": "AgIAADIAAAAAAAAAAAAswEMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:23:10.111Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ProductService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\ProductService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\ProductService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\ProductService.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAgwHYAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:25:09.924Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "20251108122540_AddProductAndStockTables.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108122540_AddProductAndStockTables.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108122540_AddProductAndStockTables.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108122540_AddProductAndStockTables.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108122540_AddProductAndStockTables.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:25:40.875Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "SupplierManagement.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\SupplierManagement.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\SupplierManagement.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\SupplierManagement.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\SupplierManagement.razor",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAAwLAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:20:49.283Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "20251108122015_AddSupplierTable.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108122015_AddSupplierTable.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108122015_AddSupplierTable.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108122015_AddSupplierTable.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108122015_AddSupplierTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:20:15.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "SupplierService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\SupplierService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\SupplierService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\SupplierService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\SupplierService.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAQwCsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:18:24.561Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Supplier.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Supplier.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\Supplier.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Supplier.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\Supplier.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAQwBgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:17:46.996Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "CustomerService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\CustomerService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\CustomerService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\CustomerService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\CustomerService.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAQwDIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:13:34.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "20251108121420_AddCustomerAndPaymentTables.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108121420_AddCustomerAndPaymentTables.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108121420_AddCustomerAndPaymentTables.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108121420_AddCustomerAndPaymentTables.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108121420_AddCustomerAndPaymentTables.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:14:20.486Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "Customer.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Customer.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\Customer.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Customer.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\Customer.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAQwDYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:11:53.386Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "EmployeeManagement.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\EmployeeManagement.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\EmployeeManagement.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\EmployeeManagement.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\EmployeeManagement.razor",
+              "ViewState": "AgIAADEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T12:09:34.545Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "20251108120908_AddEmployeeTable.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108120908_AddEmployeeTable.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108120908_AddEmployeeTable.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108120908_AddEmployeeTable.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108120908_AddEmployeeTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:09:08.291Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "EmployeeService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\EmployeeService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Services\\EmployeeService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Services\\EmployeeService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Services\\EmployeeService.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAxwC4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:06:28.506Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "Employee.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Employee.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\Employee.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\Employee.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\Employee.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T12:05:51.623Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "UserManagement.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\UserManagement.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\UserManagement.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\UserManagement.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\UserManagement.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAALgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T11:54:56.141Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\UserService.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Models\\UserService.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Models\\UserService.cs",
+              "RelativeToolTip": "ModernBillingApp\\Models\\UserService.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAQwFMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T11:51:56.761Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "Login.razor",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\Login.razor",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Pages\\Login.razor",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Pages\\Login.razor",
+              "RelativeToolTip": "ModernBillingApp\\Pages\\Login.razor",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-08T11:48:24.891Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "20251108114449_InitialCreate.cs",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108114449_InitialCreate.cs",
+              "RelativeDocumentMoniker": "ModernBillingApp\\Migrations\\20251108114449_InitialCreate.cs",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\Migrations\\20251108114449_InitialCreate.cs",
+              "RelativeToolTip": "ModernBillingApp\\Migrations\\20251108114449_InitialCreate.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-08T11:44:50.282Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\appsettings.json",
+              "RelativeDocumentMoniker": "ModernBillingApp\\appsettings.json",
+              "ToolTip": "F:\\Project\\ModernBillingApp\\ModernBillingApp\\appsettings.json",
+              "RelativeToolTip": "ModernBillingApp\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-08T11:42:04.309Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

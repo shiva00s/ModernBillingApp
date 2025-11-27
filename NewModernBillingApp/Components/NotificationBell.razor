@@ -1,0 +1,331 @@
+@using NewModernBillingApp.Services
+@using NewModernBillingApp.Models
+@inject NotificationService notificationService
+@inject SessionService sessionService
+@inject IJSRuntime jsRuntime
+@implements IDisposable
+
+<div class="dropdown">
+    <button class="btn btn-outline-secondary btn-sm position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notifications">
+        <i class="bi bi-bell"></i>
+        @if (unreadCount > 0)
+        {
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                @(unreadCount > 99 ? "99+" : unreadCount.ToString())
+                <span class="visually-hidden">unread notifications</span>
+            </span>
+        }
+    </button>
+
+    <ul class="dropdown-menu dropdown-menu-end notification-dropdown" style="width: 350px; max-height: 400px; overflow-y: auto;">
+        <li class="dropdown-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-bell me-2"></i>Notifications</span>
+            @if (unreadCount > 0)
+            {
+                <button class="btn btn-link btn-sm p-0" @onclick="MarkAllAsRead" title="Mark all as read">
+                    <i class="bi bi-check-all"></i>
+                </button>
+            }
+        </li>
+        <li><hr class="dropdown-divider"></li>
+
+        @if (notifications == null)
+        {
+            <li class="text-center py-3">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </li>
+        }
+        else if (!notifications.Any())
+        {
+            <li class="text-center py-3 text-muted">
+                <i class="bi bi-bell-slash display-6 d-block mb-2 opacity-50"></i>
+                <small>No notifications</small>
+            </li>
+        }
+        else
+        {
+            @foreach (var notification in notifications.Take(10))
+            {
+                <li class="notification-item @(!notification.IsRead ? "unread" : "")" @onclick="() => HandleNotificationClick(notification)">
+                    <div class="d-flex">
+                        <div class="notification-icon me-2">
+                            <i class="bi @GetNotificationIcon(notification.Type) text-@GetNotificationColor(notification.Type)"></i>
+                        </div>
+                        <div class="notification-content flex-grow-1">
+                            <div class="notification-title">
+                                @notification.Title
+                                @if (!notification.IsRead)
+                                {
+                                    <span class="badge bg-primary ms-1" style="font-size: 0.6rem;">New</span>
+                                }
+                            </div>
+                            @if (!string.IsNullOrEmpty(notification.Message))
+                            {
+                                <div class="notification-message">
+                                    @notification.Message
+                                </div>
+                            }
+                            <div class="notification-time">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>@GetTimeAgo(notification.CreatedDate)
+                                </small>
+                                @if (!string.IsNullOrEmpty(notification.Category))
+                                {
+                                    <span class="badge bg-secondary ms-2" style="font-size: 0.6rem;">@notification.Category</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="notification-actions">
+                            @if (!notification.IsRead)
+                            {
+                                <button class="btn btn-link btn-sm p-0" @onclick:stopPropagation="true" @onclick="() => MarkAsRead(notification.Id)" title="Mark as read">
+                                    <i class="bi bi-check text-success"></i>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+
+            @if (notifications.Count > 10)
+            {
+                <li><hr class="dropdown-divider"></li>
+                <li class="text-center">
+                    <a class="dropdown-item small" href="/notifications">
+                        <i class="bi bi-arrow-right me-1"></i>View all notifications (@notifications.Count)
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+@code {
+    private List<Notification>? notifications;
+    private int unreadCount = 0;
+    private Timer? refreshTimer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadNotifications();
+
+        // Set up auto-refresh every 30 seconds
+        refreshTimer = new Timer(async _ => await InvokeAsync(RefreshNotifications), null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
+    }
+
+    private async Task LoadNotifications()
+    {
+        if (sessionService.CurrentUserId.HasValue)
+        {
+            notifications = await notificationService.GetUserNotificationsAsync(sessionService.CurrentUserId.Value);
+            unreadCount = await notificationService.GetUnreadNotificationCountAsync(sessionService.CurrentUserId.Value);
+            StateHasChanged();
+        }
+    }
+
+    private async Task RefreshNotifications()
+    {
+        await LoadNotifications();
+    }
+
+    private async Task MarkAsRead(int notificationId)
+    {
+        if (sessionService.CurrentUserId.HasValue)
+        {
+            await notificationService.MarkAsReadAsync(notificationId, sessionService.CurrentUserId.Value);
+            await LoadNotifications();
+        }
+    }
+
+    private async Task MarkAllAsRead()
+    {
+        if (sessionService.CurrentUserId.HasValue)
+        {
+            await notificationService.MarkAllAsReadAsync(sessionService.CurrentUserId.Value);
+            await LoadNotifications();
+        }
+    }
+
+    private async Task HandleNotificationClick(Notification notification)
+    {
+        // Mark as read if not already read
+        if (!notification.IsRead && sessionService.CurrentUserId.HasValue)
+        {
+            await notificationService.MarkAsReadAsync(notification.Id, sessionService.CurrentUserId.Value);
+        }
+
+        // Navigate to action URL if provided
+        if (!string.IsNullOrEmpty(notification.ActionUrl))
+        {
+            await jsRuntime.InvokeVoidAsync("open", notification.ActionUrl, "_self");
+        }
+
+        await LoadNotifications();
+    }
+
+    private string GetNotificationIcon(string type) => type.ToLower() switch
+    {
+        "success" => "bi-check-circle",
+        "warning" => "bi-exclamation-triangle",
+        "error" => "bi-x-circle",
+        "info" => "bi-info-circle",
+        "system" => "bi-gear",
+        _ => "bi-bell"
+    };
+
+    private string GetNotificationColor(string type) => type.ToLower() switch
+    {
+        "success" => "success",
+        "warning" => "warning",
+        "error" => "danger",
+        "info" => "info",
+        "system" => "secondary",
+        _ => "primary"
+    };
+
+    private string GetTimeAgo(DateTime dateTime)
+    {
+        var timeSpan = DateTime.Now - dateTime;
+
+        if (timeSpan.TotalMinutes < 1)
+            return "Just now";
+        else if (timeSpan.TotalMinutes < 60)
+            return $"{(int)timeSpan.TotalMinutes}m ago";
+        else if (timeSpan.TotalHours < 24)
+            return $"{(int)timeSpan.TotalHours}h ago";
+        else if (timeSpan.TotalDays < 7)
+            return $"{(int)timeSpan.TotalDays}d ago";
+        else
+            return dateTime.ToString("MMM dd");
+    }
+
+    public void Dispose()
+    {
+        refreshTimer?.Dispose();
+    }
+}
+
+<style>
+    .notification-dropdown {
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .notification-item {
+        padding: 0.75rem;
+        border-bottom: 1px solid #f8f9fa;
+        cursor: pointer;
+        transition: background-color 0.15s ease-in-out;
+    }
+
+    .notification-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .notification-item.unread {
+        background-color: #fff3cd;
+        border-left: 3px solid #ffc107;
+    }
+
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .notification-icon {
+        width: 2rem;
+        text-align: center;
+        padding-top: 0.125rem;
+    }
+
+    .notification-content {
+        min-width: 0;
+    }
+
+    .notification-title {
+        font-weight: 600;
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+    }
+
+    .notification-message {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 0.375rem;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .notification-time {
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .notification-actions {
+        width: 2rem;
+        text-align: center;
+    }
+
+    .dropdown-header {
+        font-weight: 600;
+        color: #495057;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Dark theme adjustments */
+    .dark-theme .notification-dropdown {
+        background-color: #2d3748;
+        border-color: #4a5568;
+        color: white;
+    }
+
+    .dark-theme .notification-item:hover {
+        background-color: #4a5568;
+    }
+
+    .dark-theme .notification-item.unread {
+        background-color: #553c0d;
+        border-left-color: #f6e05e;
+    }
+
+    .dark-theme .notification-message {
+        color: #a0aec0;
+    }
+
+    .dark-theme .dropdown-header {
+        color: #e2e8f0;
+        border-bottom-color: #4a5568;
+    }
+
+    .dark-theme .dropdown-divider {
+        border-color: #4a5568;
+    }
+
+    /* Mobile responsiveness */
+    @@media (max-width: 576px) {
+        .notification-dropdown {
+            width: 300px !important;
+            max-height: 350px !important;
+        }
+
+        .notification-title {
+            font-size: 0.8rem;
+        }
+
+        .notification-message {
+            font-size: 0.75rem;
+        }
+
+        .notification-time {
+            font-size: 0.7rem;
+        }
+    }
+</style>

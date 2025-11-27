@@ -1,0 +1,183 @@
+﻿@page "/print/receipt/{BillId:int}"
+@using Microsoft.JSInterop
+@using ModernBillingApp
+@layout EmptyLayout
+@inject BillingService billingService
+@inject SettingsService settingsService
+@inject IJSRuntime jsRuntime
+
+<div class="receipt-container">
+    <div class="header">
+        @if (settings?.Logo != null)
+        {
+            <img src="@($"data:image/png;base64,{Convert.ToBase64String(settings.Logo)}")" class="logo" />
+        }
+        <h4 class="shop-name">@settings?.ShopName</h4>
+        <p>@settings?.Address</p>
+        <p>Contact: @settings?.ContactNumber</p>
+        <p>GST: @settings?.GstNumber</p>
+    </div>
+
+    <div class="info">
+        <span>Bill No: @bill?.BillNo</span>
+        <span>Date: @bill?.BDate.ToString("dd/MM/yy hh:mm tt")</span>
+    </div>
+    
+    <div class="customer-info">
+        <p>Customer: @(string.IsNullOrEmpty(bill?.CName) ? "Walk-in" : bill.CName)</p>
+        <p>Contact: @bill?.CContact</p>
+    </div>
+
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (bill?.Items != null)
+            {
+                @foreach (var item in bill.Items)
+                {
+                    <tr>
+                        <td>@item.PName</td>
+                        <td>@item.PQty</td>
+                        <td>@item.SPrice.ToString("0.00")</td>
+                        <td>@item.Total.ToString("0.00")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="totals">
+        <div class="row">
+            <span>Sub-Total:</span>
+            <span>@bill?.TotalAmount.ToString("0.00")</span>
+        </div>
+        <div class="row">
+            <span>Total GST:</span>
+            <span>@bill?.GstAmount.ToString("0.00")</span>
+        </div>
+        <div class="row grand-total">
+            <span>GRAND TOTAL:</span>
+            <span>@bill?.GrandTotal.ToString("0.00")</span>
+        </div>
+        <div class="row">
+            <span>Amount Paid:</span>
+            <span>@bill?.PayAmt.ToString("0.00")</span>
+        </div>
+        <div class="row">
+            <span>Balance:</span>
+            <span>@bill?.BalAmt.ToString("0.00")</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank You, Visit Again!</p>
+    </div>
+</div>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+    }
+    .receipt-container {
+        width: 280px; /* 3-inch thermal paper width is ~288px */
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        color: #000;
+        padding: 10px;
+    }
+    .header, .footer {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .header .logo {
+        max-width: 150px;
+        margin-bottom: 5px;
+    }
+    .header h4 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    .header p, .customer-info p {
+        margin: 2px 0;
+    }
+    .info {
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px dashed #000;
+        border-bottom: 1px dashed #000;
+        padding: 5px 0;
+    }
+    .customer-info {
+        margin-top: 10px;
+    }
+    .item-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .item-table th, .item-table td {
+        padding: 2px;
+    }
+    .item-table thead {
+        border-bottom: 1px dashed #000;
+    }
+    .item-table td:nth-child(2),
+    .item-table td:nth-child(3),
+    .item-table td:nth-child(4) {
+        text-align: right;
+    }
+    .totals {
+        margin-top: 10px;
+        border-top: 1px dashed #000;
+        padding-top: 5px;
+    }
+    .totals .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2px;
+    }
+    .totals .grand-total {
+        font-size: 16px;
+        font-weight: bold;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        padding: 3px 0;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int BillId { get; set; }
+
+    private Bill? bill;
+    private ShopSettings? settings;
+
+    protected override async Task OnInitializedAsync()
+    {
+    
+        // Load the bill and shop settings
+        // This logic runs when the page loads
+        bill = await billingService.GetBillById(BillId); // We need to create this function
+        settings = await settingsService.GetSettings();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // This runs *after* the page has finished loading
+        if (firstRender && bill != null)
+        {
+        
+            await jsRuntime.InvokeVoidAsync("openPrintDialog"); // This calls our javascript
+        }
+    }
+}

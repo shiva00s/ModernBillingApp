@@ -1,0 +1,68 @@
+    ﻿@page "/database-backup"
+@using Microsoft.AspNetCore.Components.Forms
+@inject DatabaseService dbService
+
+<h3>Database Backup</h3>
+<p>Create a backup of your store's database. Backups are saved on the server.</p>
+
+<div class="card shadow col-md-6">
+    <div class="card-body">
+        <div class="mb-3">
+            <label class="form-label">Backup Location (on the server)</label>
+            <InputText @bind-value="backupPath" class="form-control" />
+            <div class="form-text">
+                Example: C:\Backups (This folder must exist on the computer running the app).
+            </div>
+        </div>
+
+        <button class="btn btn-primary" @onclick="HandleBackup" disabled="@isLoading">
+            @if (isLoading)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span> Backing up...</span>
+            }
+            else
+            {
+                <span>Create Backup</span>
+            }
+        </button>
+
+        @if (!string.IsNullOrEmpty(message))
+        {
+            <div class="alert @(isError ? "alert-danger" : "alert-success") mt-3">
+                @message
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private string backupPath = @"C:\DB_Backups"; // Default path
+    private string message = "";
+    private bool isError = false;
+    private bool isLoading = false;
+
+    private async Task HandleBackup()
+    {
+        isLoading = true;
+        message = "";
+        isError = false;
+
+        try
+        {
+            var result = await dbService.BackupDatabase(backupPath);
+            message = result;
+            if (result.StartsWith("Error"))
+            {
+                isError = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"A critical error occurred: {ex.Message}";
+            isError = true;
+        }
+
+        isLoading = false;
+    }
+}

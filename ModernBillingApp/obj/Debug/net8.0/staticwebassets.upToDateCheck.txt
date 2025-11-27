@@ -1,0 +1,8 @@
+wwwroot\app.css
+wwwroot\bootstrap\bootstrap.min.css
+wwwroot\bootstrap\bootstrap.min.css.map
+wwwroot\compact-layout.css
+wwwroot\dark-mode.css
+wwwroot\favicon.png
+wwwroot\js\keyboard-shortcuts.js
+wwwroot\js\print.js

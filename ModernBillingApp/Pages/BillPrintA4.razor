@@ -1,0 +1,239 @@
+﻿@page "/print/a4/{BillId:int}"
+@layout EmptyLayout
+@inject BillingService billingService
+@inject SettingsService settingsService
+@inject IJSRuntime jsRuntime
+@using Microsoft.JSInterop
+@using ModernBillingApp
+
+<div class="a4-page">
+    <div class="header-section">
+        <div class="logo">
+            @if (settings?.Logo != null)
+            {
+                <img src="@($"data:image/png;base64,{Convert.ToBase64String(settings.Logo)}")" />
+            }
+        </div>
+        <div class="shop-details">
+            <h2>@settings?.ShopName</h2>
+            <p>@settings?.Address</p>
+            <p>Contact: @settings?.ContactNumber | GST: @settings?.GstNumber</p>
+        </div>
+        <div class="invoice-title">
+            <h1>INVOICE</h1>
+        </div>
+    </div>
+
+    <div class="bill-info">
+        <div class="bill-to">
+            <strong>BILL TO:</strong>
+            <p>@bill?.CName</p>
+            <p>@bill?.Customer?.CAddress</p>
+            <p>Contact: @bill?.CContact</p>
+            <p>GST: @bill?.Customer?.CGST</p>
+        </div>
+        <div class="bill-details">
+            <p><strong>Bill No:</strong> @bill?.BillNo</p>
+            <p><strong>Date:</strong> @bill?.BDate.ToString("dd-MMM-yyyy")</p>
+            <p><strong>Payment Mode:</strong> @bill?.PaymentMode</p>
+        </div>
+    </div>
+
+    <table class="item-table">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th>Product (PID)</th>
+                <th>HSN</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>GST %</th>
+                <th>GST Amt</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (bill?.Items != null)
+            {
+                int i = 1;
+                @foreach (var item in bill.Items)
+                {
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.PName (@item.PID)</td>
+                        <td>@item.HSN</td>
+                        <td>@item.SPrice.ToString("0.00")</td>
+                        <td>@item.PQty</td>
+                        <td>@item.Gst.ToString("0")%</td>
+                        <td>@item.GstAmount.ToString("0.00")</td>
+                        <td class="text-end">@item.Total.ToString("0.00")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <div class="totals-section">
+        <div class="summary">
+            <p><strong>Sub-Total:</strong> <span>@bill?.TotalAmount.ToString("0.00")</span></p>
+            <p><strong>Total GST:</strong> <span>@bill?.GstAmount.ToString("0.00")</span></p>
+            <h4 class="grand-total">
+                <strong>Grand Total:</strong> <span>@bill?.GrandTotal.ToString("0.00")</span>
+            </h4>
+            <p><strong>Amount Paid:</strong> <span>@bill?.PayAmt.ToString("0.00")</span></p>
+            <p><strong>Balance Due:</strong> <span>@bill?.BalAmt.ToString("0.00")</span></p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Thank You For Your Business!</p>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #EEE;
+    }
+
+    .a4-page {
+        width: 210mm;
+        height: 297mm;
+        padding: 15mm;
+        margin: 10mm auto;
+        border: 1px solid #D3D3D3;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        font-size: 12pt;
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+    }
+
+        .header-section .logo img {
+            max-width: 150px;
+            max-height: 100px;
+        }
+
+        .header-section .shop-details {
+            text-align: left;
+        }
+
+            .header-section .shop-details h2 {
+                margin: 0;
+                color: #333;
+            }
+
+            .header-section .shop-details p {
+                margin: 3px 0;
+                font-size: 10pt;
+            }
+
+        .header-section .invoice-title h1 {
+            margin: 0;
+            color: #555;
+        }
+
+    .bill-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+        .bill-info p {
+            margin: 3px 0;
+        }
+
+    .bill-details {
+        text-align: right;
+    }
+
+    .item-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 11pt;
+    }
+
+        .item-table th, .item-table td {
+            border: 1px solid #DDD;
+            padding: 8px;
+        }
+
+        .item-table .table-dark th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .item-table .text-end {
+            text-align: right;
+        }
+
+    .totals-section {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+        .totals-section .summary {
+            width: 40%;
+        }
+
+        .totals-section p {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .totals-section .grand-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+            padding: 5px 0;
+        }
+
+    .footer {
+        text-align: center;
+        margin-top: 50px;
+        border-top: 1px solid #CCC;
+        padding-top: 10px;
+        font-size: 10pt;
+    }
+
+    @@media print {
+        body, .a4-page {
+            margin: 0;
+            box-shadow: none;
+            border: none;
+            background: white;
+        }
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int BillId { get; set; }
+
+    private Bill? bill;
+    private ShopSettings? settings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        bill = await billingService.GetBillById(BillId);
+        settings = await settingsService.GetSettings();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && bill != null)
+        {
+            await jsRuntime.InvokeVoidAsync("openPrintDialog");
+        }
+    }
+}

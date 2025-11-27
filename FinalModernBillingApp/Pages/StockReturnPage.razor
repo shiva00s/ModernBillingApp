@@ -1,0 +1,162 @@
+@page "/stock-return"
+@inject ProductService productService
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using ModernBillingApp.Models
+@using ModernBillingApp.Services
+
+<h3>Stock Return</h3>
+<p>Use this page to log products returned to a supplier or marked as damaged.</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header"><h5>Log a Stock Return</h5></div>
+            <div class="card-body">
+                <EditForm Model="@newReturn" OnValidSubmit="HandleReturnStock">
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-3">
+                        <label class="form-label">Product to Return</label>
+                        <InputSelect @bind-value="SelectedProductId" class="form-select">
+                            <option value="0">-- Select a Product --</option>
+                            @if (productList != null)
+                            {
+                                @foreach (var product in productList)
+                                {
+                                    <option value="@product.Id">@product.PName (@product.PID) - [Current Stock: @product.CurrentStock]</option>
+                                }
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => newReturn.PName)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantity to Return (TQty)</label>
+                        <InputNumber @bind-value="newReturn.TQty" class="form-control" />
+                        <ValidationMessage For="@(() => newReturn.TQty)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Reason / Remarks</label>
+                        <InputText @bind-value="newReturn.Remarks" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Supplier (VName)</label>
+                        <InputText @bind-value="newReturn.VName" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Purchase Order No. (PurNo)</label>
+                        <InputText @bind-value="newReturn.PurNo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Batch No.</label>
+                        <InputText @bind-value="newReturn.BatchNo" class="form-control" />
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger">@errorMessage</div>
+                    }
+
+                    <button type="submit" class="btn btn-warning">Process Stock Return</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Product> productList = new List<Product>();
+    private List<StockLedger> stockHistory = new List<StockLedger>();
+    private StockReturn newReturn = new ModernBillingApp.Models.StockReturn();
+    private string selectedProductName = "N/A";
+    private string errorMessage = "";
+
+    // This is now a property. When it changes, it runs the 'set' logic.
+    private int _selectedProductId;
+    private int SelectedProductId
+    {
+        get => _selectedProductId;
+        set
+        {
+            _selectedProductId = value;
+            // This logic now runs automatically when the dropdown changes
+            if (value > 0)
+            {
+                var product = productList.FirstOrDefault(p => p.Id == value);
+                if (product != null)
+                {
+                    selectedProductName = product.PName ?? "N/A";
+                    // Pre-fill the form
+                    newReturn.PID = product.PID;
+                    newReturn.PName = product.PName;
+                    newReturn.HSN = product.HSN;
+                    newReturn.SPrice = product.SPrice;
+                    newReturn.MRP = product.MRP;
+                    newReturn.Gst = (double)product.Gst;
+                    newReturn.Qty = (double)product.CurrentStock; // Show current stock
+
+                    // Call async method to load history
+                    _ = LoadStockHistory(value);
+                }
+            }
+            else
+            {
+                selectedProductName = "N/A";
+                newReturn = new ModernBillingApp.Models.StockReturn();
+                stockHistory.Clear();
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load products for the dropdown
+        productList = await productService.GetProducts();
+    }
+
+    private async Task LoadStockHistory(int productId)
+    {
+        stockHistory = await productService.GetStockHistory(productId);
+        StateHasChanged(); // Tell the UI to refresh
+    }
+
+    private async Task HandleReturnStock()
+    {
+        errorMessage = ""; // Clear any old errors
+
+        if (SelectedProductId == 0 || newReturn.TQty <= 0)
+        {
+            errorMessage = "Please select a product and enter a valid quantity to return.";
+            return;
+        }
+
+        // --- Improvement: Check for sufficient stock ---
+        var product = productList.First(p => p.Id == SelectedProductId);
+        if ((decimal)newReturn.TQty > product.CurrentStock)
+        {
+            errorMessage = $"Cannot return {newReturn.TQty}. Only {product.CurrentStock} are in stock.";
+            return;
+        }
+
+        // This is the "Save" button logic
+        await productService.ReturnStock(newReturn, SelectedProductId);
+
+        // Refresh the product list to show new "CurrentStock"
+        productList = await productService.GetProducts();
+
+        // Clear the form
+        newReturn = new ModernBillingApp.Models.StockReturn();
+
+        // Re-select the product to refresh its details and history
+        int tempProductId = SelectedProductId;
+        SelectedProductId = 0; // Force a clear
+        SelectedProductId = tempProductId; // This will trigger the property 'set' and all its logic
+
+        StateHasChanged();
+    }
+}

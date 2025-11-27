@@ -1,0 +1,160 @@
+﻿@page "/stock-in"
+@inject ProductService productService
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Stock-In (Add Inventory)</h3>
+<p>Use this page to add new stock to your product catalog.</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-header"><h5>Add New Stock</h5></div>
+            <div class="card-body">
+                <EditForm Model="@newEntry" OnValidSubmit="HandleAddStock">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Product</label>
+                        <InputSelect @bind-Value="selectedProductId" class="form-select" @oninput="OnProductSelected">
+                            <option value="0">-- Select a Product --</option>
+                            @if (productList != null)
+                            {
+                                @foreach (var product in productList)
+                                {
+                                    <option value="@product.Id">@product.PName (@product.PID)</option>
+                                }
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => newEntry.ProductId)" />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Supplier</label>
+                        <InputSelect @bind-Value="newEntry.SupplierId" class="form-select">
+                            <option value="0">-- Select a Supplier --</option>
+                            @if (supplierList != null)
+                            {
+                                @foreach (var supplier in supplierList)
+                                {
+                                    <option value="@supplier.Id">@supplier.VName</option>
+                                }
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantity Added</label>
+                        <InputNumber @bind-Value="newEntry.QtyAdded" class="form-control" />
+                        <ValidationMessage For="@(() => newEntry.QtyAdded)" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Purchase Price (per item)</label>
+                        <InputNumber @bind-Value="newEntry.PPrice" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Purchase Order No. (PurNo)</label>
+                        <InputText @bind-Value="newEntry.PurNo" class="form-control" />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Batch No.</label>
+                        <InputText @bind-Value="newEntry.BatchNo" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Add Stock to Inventory</button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h5>Stock History for: @selectedProductName</h5>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Qty Added</th>
+                    <th>Purchase Price</th>
+                    <th>Batch No.</th>
+                    <th>Supplier</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (stockHistory == null || stockHistory.Count == 0)
+                {
+                    <tr><td colspan="5">Select a product to see its history.</td></tr>
+                }
+                else
+                {
+                    @foreach (var entry in stockHistory)
+                    {
+                        <tr>
+                            <td>@entry.Date.ToShortDateString()</td>
+                            <td>@entry.QtyAdded</td>
+                            <td>@entry.PPrice.ToString("0.00")</td>
+                            <td>@entry.BatchNo</td>
+                            <td>@entry.Supplier?.VName</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<Product> productList = new List<Product>();
+    private List<Supplier> supplierList = new List<Supplier>();
+    private List<StockLedger> stockHistory = new List<StockLedger>();
+    
+    private StockLedger newEntry = new StockLedger();
+    private int selectedProductId;
+    private string selectedProductName = "N/A";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load products and suppliers for the dropdowns
+        productList = await productService.GetProducts();
+        supplierList = await productService.GetSuppliers();
+    }
+
+    private async Task OnProductSelected(ChangeEventArgs e)
+    {
+        // This runs when you select a product from the dropdown
+        if (int.TryParse(e.Value?.ToString(), out int productId) && productId > 0)
+        {
+            selectedProductId = productId;
+            newEntry.ProductId = productId;
+            
+            var product = productList.First(p => p.Id == productId);
+            selectedProductName = product.PName ?? "N/A";
+
+            // Load the stock history for the selected product
+            stockHistory = await productService.GetStockHistory(productId);
+        }
+        else
+        {
+            selectedProductId = 0;
+            selectedProductName = "N/A";
+            stockHistory.Clear();
+        }
+    }
+
+    private async Task HandleAddStock()
+    {
+        // This is the "Save" button logic
+        await productService.AddStock(newEntry);
+        
+        // Refresh the product list to show new "CurrentStock"
+        productList = await productService.GetProducts();
+        
+        // Refresh the history
+        stockHistory = await productService.GetStockHistory(selectedProductId);
+        
+        // Clear the form for the next entry
+        newEntry = new StockLedger { ProductId = selectedProductId }; 
+    }
+}

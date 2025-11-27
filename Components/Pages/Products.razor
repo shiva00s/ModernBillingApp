@@ -1,0 +1,372 @@
+@page "/products"
+@using MergeModernBilling.Models
+@using MergeModernBilling.Services
+@inject ProductService ProductService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Product Management</PageTitle>
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h3>Product Management</h3>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-primary" @onclick="ShowAddProductModal">
+                <i class="fas fa-plus"></i> Add New Product
+            </button>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Search products..." @bind="searchTerm" @oninput="SearchProducts" />
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" @bind="selectedCategory" @onchange="FilterProducts">
+                <option value="">All Categories</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Food">Food</option>
+                <option value="Books">Books</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" @bind="stockFilter" @onchange="FilterProducts">
+                <option value="all">All Stock</option>
+                <option value="instock">In Stock</option>
+                <option value="lowstock">Low Stock</option>
+                <option value="outofstock">Out of Stock</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="card">
+        <div class="card-body">
+            @if (products == null || products.Count == 0)
+            {
+                <div class="text-center py-4">
+                    <i class="fas fa-box fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">No products found</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product Code</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in products)
+                            {
+                                <tr>
+                                    <td>@product.ProductCode</td>
+                                    <td>@product.Name</td>
+                                    <td>@product.Category</td>
+                                    <td>@product.Price.ToString("C")</td>
+                                    <td>
+                                        <span class="@(product.StockQuantity <= 10 ? "text-danger" : "")">
+                                            @product.StockQuantity
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (product.StockQuantity == 0)
+                                        {
+                                            <span class="badge bg-danger">Out of Stock</span>
+                                        }
+                                        else if (product.StockQuantity <= 10)
+                                        {
+                                            <span class="badge bg-warning">Low Stock</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">In Stock</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" @onclick="() => EditProduct(product)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info" @onclick="() => ViewProduct(product)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" @onclick="() => AddStock(product)">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteProduct(product)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Product Modal -->
+@if (showProductModal)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(isEditMode ? "Edit Product" : "Add New Product")</h5>
+                    <button type="button" class="btn-close" @onclick="CloseProductModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Product Code</label>
+                            <input class="form-control" @bind="currentProduct.ProductCode" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input class="form-control" @bind="currentProduct.Name" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" @bind="currentProduct.Description" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" @bind="currentProduct.Category">
+                                    <option value="">Select Category</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Clothing">Clothing</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Books">Books</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Price</label>
+                                <input type="number" class="form-control" @bind="currentProduct.Price" step="0.01" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Stock Quantity</label>
+                                <input type="number" class="form-control" @bind="currentProduct.StockQuantity" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Min Stock Level</label>
+                                <input type="number" class="form-control" @bind="currentProduct.MinStockLevel" />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" @bind="currentProduct.IsActive" />
+                                <label class="form-check-label">Active</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseProductModal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveProduct">
+                        @(isEditMode ? "Update" : "Add") Product
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Add Stock Modal -->
+@if (showStockModal)
+{
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Stock - @stockProduct?.Name</h5>
+                    <button type="button" class="btn-close" @onclick="CloseStockModal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Current Stock: @stockProduct?.StockQuantity</label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Quantity to Add</label>
+                        <input type="number" class="form-control" @bind="stockQuantity" min="1" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Reason</label>
+                        <input type="text" class="form-control" @bind="stockReason" placeholder="Purchase, Return, etc." />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseStockModal">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveStock">Add Stock</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Product> products = new();
+    private Product currentProduct = new();
+    private Product? stockProduct;
+    private string searchTerm = "";
+    private string selectedCategory = "";
+    private string stockFilter = "all";
+    private bool showProductModal = false;
+    private bool showStockModal = false;
+    private bool isEditMode = false;
+    private int stockQuantity = 0;
+    private string stockReason = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        products = await ProductService.GetAllProductsAsync();
+        FilterProducts();
+    }
+
+    private void SearchProducts()
+    {
+        FilterProducts();
+    }
+
+    private void FilterProducts()
+    {
+        var filtered = products.AsEnumerable();
+
+        if (!string.IsNullOrEmpty(searchTerm))
+        {
+            filtered = filtered.Where(p => 
+                p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                p.ProductCode.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                (p.Description?.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ?? false));
+        }
+
+        if (!string.IsNullOrEmpty(selectedCategory))
+        {
+            filtered = filtered.Where(p => p.Category == selectedCategory);
+        }
+
+        switch (stockFilter)
+        {
+            case "instock":
+                filtered = filtered.Where(p => p.StockQuantity > 10);
+                break;
+            case "lowstock":
+                filtered = filtered.Where(p => p.StockQuantity > 0 && p.StockQuantity <= 10);
+                break;
+            case "outofstock":
+                filtered = filtered.Where(p => p.StockQuantity == 0);
+                break;
+        }
+
+        products = filtered.ToList();
+        StateHasChanged();
+    }
+
+    private void ShowAddProductModal()
+    {
+        currentProduct = new Product { IsActive = true };
+        isEditMode = false;
+        showProductModal = true;
+    }
+
+    private void EditProduct(Product product)
+    {
+        currentProduct = new Product
+        {
+            Id = product.Id,
+            ProductCode = product.ProductCode,
+            Name = product.Name,
+            Description = product.Description,
+            Category = product.Category,
+            Price = product.Price,
+            StockQuantity = product.StockQuantity,
+            MinStockLevel = product.MinStockLevel,
+            IsActive = product.IsActive
+        };
+        isEditMode = true;
+        showProductModal = true;
+    }
+
+    private void ViewProduct(Product product)
+    {
+        NavigationManager.NavigateTo($"/products/{product.Id}");
+    }
+
+    private void AddStock(Product product)
+    {
+        stockProduct = product;
+        stockQuantity = 0;
+        stockReason = "";
+        showStockModal = true;
+    }
+
+    private async Task DeleteProduct(Product product)
+    {
+        if (confirm($"Are you sure you want to delete {product.Name}?"))
+        {
+            await ProductService.DeleteProductAsync(product.Id);
+            await LoadProducts();
+        }
+    }
+
+    private async Task SaveProduct()
+    {
+        if (isEditMode)
+        {
+            await ProductService.UpdateProductAsync(currentProduct);
+        }
+        else
+        {
+            await ProductService.CreateProductAsync(currentProduct);
+        }
+        CloseProductModal();
+        await LoadProducts();
+    }
+
+    private async Task SaveStock()
+    {
+        if (stockProduct != null && stockQuantity > 0)
+        {
+            stockProduct.StockQuantity += stockQuantity;
+            await ProductService.UpdateProductAsync(stockProduct);
+            CloseStockModal();
+            await LoadProducts();
+        }
+    }
+
+    private void CloseProductModal()
+    {
+        showProductModal = false;
+        currentProduct = new Product();
+    }
+
+    private void CloseStockModal()
+    {
+        showStockModal = false;
+        stockProduct = null;
+        stockQuantity = 0;
+        stockReason = "";
+    }
+}

@@ -1,0 +1,186 @@
+﻿@page "/product-catalog"
+@inject ProductService productService
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Product Catalog</h3>
+<p>Define and manage all products sold in your store.</p>
+
+<div class="row">
+    <div class="col-md-7">
+        <h5>Current Products</h5>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>PID</th>
+                    <th>Name</th>
+                    <th>Sales Price</th>
+                    <th>MRP</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (productList == null)
+                {
+                    <tr><td colspan="6">Loading...</td></tr>
+                }
+                else
+                {
+                    @foreach (var product in productList)
+                    {
+                        <tr @onclick="() => SelectProduct(product)" style="cursor:pointer">
+                            <td>@product.PID</td>
+                            <td>@product.PName</td>
+                            <td>@product.SPrice.ToString("0.00")</td>
+                            <td>@product.MRP.ToString("0.00")</td>
+                            <td>@product.CurrentStock</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" @onclick="() => SelectProduct(product)">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5>@formTitle</h5>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@editModel" OnValidSubmit="HandleSave">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="mb-2">
+                        <label class="form-label">Product ID (PID)</label>
+                        <InputText @bind-Value="editModel.PID" class="form-control" />
+                        <ValidationMessage For="@(() => editModel.PID)" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Product Name</label>
+                        <InputText @bind-Value="editModel.PName" class="form-control" />
+                        <ValidationMessage For="@(() => editModel.PName)" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Sales Price</label>
+                        <InputNumber @bind-Value="editModel.SPrice" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">MRP</label>
+                        <InputNumber @bind-Value="editModel.MRP" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">GST %</label>
+                        <InputNumber @bind-Value="editModel.Gst" class="form-control" />
+                    </div>
+
+                    <hr />
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearSelection">New</button>
+                    
+                    @if (editModel.Id != 0)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="HandleDelete">Delete</button>
+                    }
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Product> productList = new List<Product>();
+    private ProductEditModel editModel = new ProductEditModel();
+    private string formTitle = "Create New Product";
+    private int selectedProductId = 0;
+
+    // A helper class for form validation
+    public class ProductEditModel
+    {
+        public int Id { get; set; }
+        [Required]
+        public string? PID { get; set; }
+        [Required]
+        public string? PName { get; set; }
+        public decimal SPrice { get; set; }
+        public decimal MRP { get; set; }
+        public decimal Gst { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        productList = await productService.GetProducts();
+        StateHasChanged(); // Refresh the UI
+    }
+
+    private void SelectProduct(Product product)
+    {
+        selectedProductId = product.Id;
+        editModel = new ProductEditModel
+        {
+            Id = product.Id,
+            PID = product.PID,
+            PName = product.PName,
+            SPrice = product.SPrice,
+            MRP = product.MRP,
+            Gst = product.Gst
+        };
+        formTitle = $"Edit Product: {product.PName}";
+    }
+
+    private void ClearSelection()
+    {
+        selectedProductId = 0;
+        editModel = new ProductEditModel();
+        formTitle = "Create New Product";
+    }
+
+    private async Task HandleSave()
+    {
+        Product productToSave = new Product
+        {
+            Id = selectedProductId,
+            PID = editModel.PID,
+            PName = editModel.PName,
+            SPrice = editModel.SPrice,
+            MRP = editModel.MRP,
+            Gst = editModel.Gst
+            // CurrentStock will be managed by the Stock-In page
+        };
+
+        if (selectedProductId == 0) // New Product
+        {
+            await productService.CreateProduct(productToSave);
+        }
+        else // Existing Product
+        {
+            // We need to preserve the current stock level when updating
+            var existingProduct = await productService.GetProductById(selectedProductId);
+            productToSave.CurrentStock = existingProduct.CurrentStock; 
+            
+            await productService.UpdateProduct(productToSave);
+        }
+        
+        ClearSelection();
+        await LoadData();
+    }
+
+    private async Task HandleDelete()
+    {
+        if(selectedProductId == 0) return;
+        
+        await productService.DeleteProduct(selectedProductId);
+        ClearSelection();
+        await LoadData();
+    }
+}

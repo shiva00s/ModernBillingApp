@@ -1,0 +1,589 @@
+@using NewModernBillingApp.Services
+@inject SessionService sessionService
+@inject NavigationManager navigation
+
+<div class="top-row ps-3 navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/dashboard">
+            <i class="bi bi-receipt me-2"></i>Modern Billing App
+        </a>
+        <div class="text-end">
+            <small class="text-light opacity-75">@sessionService.CurrentUserRole</small>
+        </div>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <!-- Dashboard -->
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/dashboard" Match="NavLinkMatch.All">
+                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+            </NavLink>
+        </div>
+
+        <!-- Billing Section -->
+        @if (HasPermission("Billing"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-receipt-cutoff me-2"></i>Billing
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/billing">
+                        <i class="bi bi-plus-circle me-2"></i>New Bill
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/bills">
+                        <i class="bi bi-receipt me-2"></i>All Bills
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/bill-returns">
+                        <i class="bi bi-arrow-return-left me-2"></i>Returns
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Customer Management -->
+        @if (HasPermission("CustomerManagement"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-people me-2"></i>Customers
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/customers">
+                        <i class="bi bi-people-fill me-2"></i>All Customers
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/customer-payments">
+                        <i class="bi bi-credit-card me-2"></i>Payments
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Product Management -->
+        @if (HasPermission("ProductManagement"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-box-seam me-2"></i>Inventory
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/products">
+                        <i class="bi bi-box-seam-fill me-2"></i>Products
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/categories">
+                        <i class="bi bi-tags me-2"></i>Categories
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/stock-adjustment">
+                        <i class="bi bi-arrow-up-circle me-2"></i>Stock Adjustment
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/barcode-print">
+                        <i class="bi bi-upc me-2"></i>Print Barcodes
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Purchase Management -->
+        @if (HasPermission("Purchase"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-cart-plus me-2"></i>Purchase
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/suppliers">
+                        <i class="bi bi-building me-2"></i>Suppliers
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/purchases">
+                        <i class="bi bi-cart-plus-fill me-2"></i>Purchase Entry
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/purchase-returns">
+                        <i class="bi bi-arrow-return-right me-2"></i>Purchase Returns
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/supplier-payments">
+                        <i class="bi bi-cash-coin me-2"></i>Supplier Payments
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Cash Management -->
+        @if (HasPermission("CashEntry"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-cash-coin me-2"></i>Cash Management
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/cash-entry">
+                        <i class="bi bi-plus-square me-2"></i>Cash Entry
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/expenses">
+                        <i class="bi bi-receipt me-2"></i>Expenses
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/bank-accounts">
+                        <i class="bi bi-bank me-2"></i>Bank Accounts
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Staff Management -->
+        @if (HasPermission("StaffManagement"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-person-badge me-2"></i>Staff
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/staff">
+                        <i class="bi bi-person-lines-fill me-2"></i>All Staff
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/attendance">
+                        <i class="bi bi-calendar-check me-2"></i>Attendance
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/salary">
+                        <i class="bi bi-currency-rupee me-2"></i>Salary Management
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/leaves">
+                        <i class="bi bi-calendar-x me-2"></i>Leave Management
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Reports -->
+        @if (HasPermission("Reports"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-graph-up me-2"></i>Reports
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/reports/sales">
+                        <i class="bi bi-bar-chart me-2"></i>Sales Report
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/reports/purchase">
+                        <i class="bi bi-cart-check me-2"></i>Purchase Report
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/reports/customers">
+                        <i class="bi bi-people me-2"></i>Customer Report
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/reports/products">
+                        <i class="bi bi-box me-2"></i>Product Report
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/reports/stock">
+                        <i class="bi bi-clipboard-data me-2"></i>Stock Report
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/reports/profit-loss">
+                        <i class="bi bi-graph-up-arrow me-2"></i>P&L Statement
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/reports/cash-flow">
+                        <i class="bi bi-cash-stack me-2"></i>Cash Flow
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- User Management -->
+        @if (HasPermission("UserManagement"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-shield-check me-2"></i>Administration
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/users">
+                        <i class="bi bi-people-fill me-2"></i>User Management
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/roles">
+                        <i class="bi bi-person-badge-fill me-2"></i>Roles & Permissions
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/audit-logs">
+                        <i class="bi bi-journal-text me-2"></i>Audit Logs
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Settings -->
+        @if (HasPermission("Settings"))
+        {
+            <div class="nav-section">
+                <div class="nav-section-header">
+                    <i class="bi bi-gear me-2"></i>Settings
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/settings/company">
+                        <i class="bi bi-building me-2"></i>Company Info
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/settings/billing">
+                        <i class="bi bi-receipt me-2"></i>Billing Settings
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/settings/taxes">
+                        <i class="bi bi-percent me-2"></i>Tax Settings
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/settings/backup">
+                        <i class="bi bi-cloud-arrow-up me-2"></i>Backup & Restore
+                    </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/settings/integrations">
+                        <i class="bi bi-plug me-2"></i>Integrations
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Quick Actions -->
+        <div class="nav-section mt-4">
+            <div class="nav-section-header">
+                <i class="bi bi-lightning me-2"></i>Quick Actions
+            </div>
+
+            <div class="nav-item px-3">
+                <button class="nav-link btn btn-link text-start w-100" @onclick="QuickBill">
+                    <i class="bi bi-lightning-charge me-2"></i>Quick Bill
+                </button>
+            </div>
+
+            <div class="nav-item px-3">
+                <button class="nav-link btn btn-link text-start w-100" @onclick="BarcodeScan">
+                    <i class="bi bi-upc-scan me-2"></i>Barcode Scanner
+                </button>
+            </div>
+
+            <div class="nav-item px-3">
+                <button class="nav-link btn btn-link text-start w-100" @onclick="PrintLastBill">
+                    <i class="bi bi-printer me-2"></i>Print Last Bill
+                </button>
+            </div>
+        </div>
+
+        <!-- WhatsApp Integration -->
+        <div class="nav-section mt-4">
+            <div class="nav-section-header">
+                <i class="bi bi-whatsapp me-2"></i>WhatsApp
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/whatsapp/campaigns">
+                    <i class="bi bi-megaphone me-2"></i>Campaigns
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/whatsapp/templates">
+                    <i class="bi bi-chat-text me-2"></i>Templates
+                </NavLink>
+            </div>
+        </div>
+
+        <!-- Support -->
+        <div class="nav-section mt-4 mb-4">
+            <div class="nav-section-header">
+                <i class="bi bi-question-circle me-2"></i>Help & Support
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/help">
+                    <i class="bi bi-book me-2"></i>User Guide
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/support">
+                    <i class="bi bi-headset me-2"></i>Contact Support
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="/about">
+                    <i class="bi bi-info-circle me-2"></i>About
+                </NavLink>
+            </div>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool HasPermission(string permission)
+    {
+        // Check if user has permission - simplified for now
+        return sessionService.IsLoggedIn && !string.IsNullOrEmpty(sessionService.CurrentUserRole);
+    }
+
+    private async Task QuickBill()
+    {
+        navigation.NavigateTo("/billing?quick=true");
+    }
+
+    private async Task BarcodeScan()
+    {
+        // Implement barcode scanning functionality
+        navigation.NavigateTo("/billing?scan=true");
+    }
+
+    private async Task PrintLastBill()
+    {
+        // Implement print last bill functionality
+        await InvokeAsync(async () =>
+        {
+            await Task.Delay(100); // Small delay for UI
+            // Add print logic here
+        });
+    }
+}
+
+<style>
+    .top-row {
+        height: 3.5rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .nav-scrollable {
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+        background: #f8f9fa;
+        padding: 1rem 0;
+    }
+
+    .nav-section {
+        margin-bottom: 1.5rem;
+    }
+
+    .nav-section-header {
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: rgba(0, 0, 0, 0.05);
+        border-left: 3px solid #0d6efd;
+    }
+
+    .nav-item {
+        margin-bottom: 0.25rem;
+    }
+
+    .nav-link {
+        color: #495057;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        background: none;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+    }
+
+    .nav-link:hover {
+        color: #0d6efd;
+        background: rgba(13, 110, 253, 0.1);
+        border-left: 3px solid #0d6efd;
+        padding-left: calc(1.5rem - 3px);
+    }
+
+    .nav-link.active {
+        color: #0d6efd;
+        background: rgba(13, 110, 253, 0.15);
+        border-left: 3px solid #0d6efd;
+        padding-left: calc(1.5rem - 3px);
+        font-weight: 600;
+    }
+
+    .nav-link i {
+        width: 1.25rem;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    /* Mobile styles */
+    .navbar-toggler {
+        appearance: none;
+        cursor: pointer;
+        width: 2.5rem;
+        height: 2.5rem;
+        color: rgba(255, 255, 255, 0.75);
+        background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.375rem;
+    }
+
+    .navbar-toggler:checked ~ .nav-scrollable {
+        display: block;
+    }
+
+    @@media (max-width: 640.98px) {
+        .nav-scrollable {
+            display: none;
+            position: fixed;
+            top: 3.5rem;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-toggler {
+            display: block;
+        }
+
+        .nav-section-header {
+            background: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+    }
+
+    @@media (min-width: 641px) {
+        .navbar-toggler {
+            display: none;
+        }
+
+        .nav-scrollable {
+            display: block;
+        }
+    }
+
+    /* Scrollbar styling */
+    .nav-scrollable::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .nav-scrollable::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .nav-scrollable::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .nav-scrollable::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    /* Dark theme support */
+    @@media (prefers-color-scheme: dark) {
+        .nav-scrollable {
+            background: #212529;
+        }
+
+        .nav-section-header {
+            background: rgba(255, 255, 255, 0.05);
+            color: #adb5bd;
+        }
+
+        .nav-link {
+            color: #adb5bd;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: #ffffff;
+            background: rgba(13, 110, 253, 0.25);
+        }
+    }
+</style>

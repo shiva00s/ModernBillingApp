@@ -1,0 +1,328 @@
+
+@page "/login"
+
+@rendermode InteractiveServer
+@using ModernBillingApp.Services
+@using ModernBillingApp.Models
+@using System.ComponentModel.DataAnnotations
+@inject AuthService authService
+@inject PermissionService permissionService
+@inject SessionService SessionService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Login - Modern Billing App</PageTitle>
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h2><i class="bi bi-receipt"></i> Modern Billing App</h2>
+            <p class="text-muted">Please sign in to continue</p>
+        </div>
+
+        <div class="login-form">
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@errorMessage
+                    <button type="button" class="btn-close" @onclick="ClearError"></button>
+                </div>
+            }
+
+            @if (isLoading)
+            {
+                <div class="text-center mb-3">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Signing in...</p>
+                </div>
+            }
+
+            <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin" FormName="LoginForm" class="needs-validation" novalidate>
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">
+                        <i class="bi bi-person-fill me-2"></i>Username
+                    </label>
+                    <InputText id="username" @bind-Value="loginModel.Username" class="form-control form-control-lg"
+                               placeholder="Enter your username" disabled="@isLoading" />
+                    <ValidationMessage For="@(() => loginModel.Username)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        <i class="bi bi-lock-fill me-2"></i>Password
+                    </label>
+                    <div class="input-group">
+                        <InputText id="password" type="@(showPassword ? "text" : "password")"
+                                  @bind-Value="loginModel.Password" class="form-control form-control-lg"
+                                  placeholder="Enter your password" disabled="@isLoading" />
+                        <button type="button" class="btn btn-outline-secondary" @onclick="TogglePasswordVisibility" disabled="@isLoading">
+                            <i class="bi @(showPassword ? "bi-eye-slash" : "bi-eye")"></i>
+                        </button>
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Password)" class="text-danger small" />
+                </div>
+
+                <div class="mb-3 form-check">
+                    <InputCheckbox id="rememberMe" @bind-Value="loginModel.RememberMe" class="form-check-input" disabled="@isLoading" />
+                    <label for="rememberMe" class="form-check-label">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" disabled="@isLoading">
+                    @if (isLoading)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        <text>Signing in...</text>
+                    }
+                    else
+                    {
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        <text>Sign In</text>
+                    }
+                </button>
+            </EditForm>
+
+            <div class="text-center">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Forgot your password? Contact your administrator.
+                </small>
+            </div>
+
+            @if (!isProduction)
+            {
+                <div class="mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <small><i class="bi bi-gear-fill me-1"></i>Development Login</small>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <button class="btn btn-outline-primary btn-sm w-100" @onclick="QuickLoginSuperAdmin">
+                                        <small>SuperAdmin</small>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-outline-success btn-sm w-100" @onclick="QuickLoginAdmin">
+                                        <small>Admin</small>
+                                    </button>
+                                </div>
+                            </div>
+                            <small class="text-muted d-block mt-2">Quick login for testing purposes</small>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private LoginModel loginModel { get; set; } = new();
+    private string errorMessage = string.Empty;
+    private bool isLoading = false;
+    private bool showPassword = false;
+    private bool isProduction = false;
+
+    protected override void OnInitialized()
+    {
+        // Check if already logged in
+        if (SessionService.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/", replace: true); // Redirect to home/dashboard if already logged in
+            return;
+        }
+
+        isProduction = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Focus on username field after first render
+            await Task.Delay(100);
+            await JSRuntime.InvokeVoidAsync("eval", "document.getElementById('username')?.focus()");
+        }
+    }
+
+    private async Task HandleLogin()
+    {
+        if (isLoading) return;
+
+        isLoading = true;
+        errorMessage = string.Empty;
+        StateHasChanged();
+
+        try
+        {
+            var user = await authService.AuthenticateAsync(loginModel.Username!, loginModel.Password!);
+
+            if (user != null)
+            {
+                // Set current user in session
+                SessionService.SetCurrentUser(user);
+
+                // Get user permissions
+                var permissions = await permissionService.GetUserPermissionsAsync(user.Id);
+                SessionService.SetUserPermissions(permissions);
+
+                // Navigate to dashboard
+                NavigationManager.NavigateTo("/", replace: true); // Navigate to root/dashboard
+            }
+            else
+            {
+                errorMessage = "Invalid username or password. Please try again.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "An error occurred during login. Please try again later.";
+            Console.WriteLine($"Login error: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task QuickLogin(string username, string password)
+    {
+        loginModel.Username = username;
+        loginModel.Password = password;
+        await HandleLogin();
+    }
+
+    private async Task QuickLoginSuperAdmin()
+    {
+        await QuickLogin("superadmin", "Admin@123");
+    }
+
+    private async Task QuickLoginAdmin()
+    {
+        await QuickLogin("admin", "Admin@123");
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+    }
+
+    private void ClearError()
+    {
+        errorMessage = string.Empty;
+    }
+}
+
+<style>
+    .login-body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+
+    .login-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+
+    .login-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .login-header h2 {
+        color: #333;
+        margin-bottom: 0.5rem;
+    }
+
+    .login-form {
+        width: 100%;
+    }
+
+    .form-control-lg {
+        padding: 0.75rem 1rem;
+        font-size: 1.1rem;
+        border-radius: 0.5rem;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+        border-radius: 0.5rem;
+    }
+
+    .input-group .btn {
+        border-left: none;
+        border-radius: 0 0.5rem 0.5rem 0;
+    }
+
+    .input-group .form-control {
+        border-right: none;
+        border-radius: 0.5rem 0 0 0.5rem;
+    }
+
+    .alert {
+        border-radius: 0.5rem;
+        border: none;
+        font-size: 0.9rem;
+    }
+
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        border-radius: 0.5rem 0.5rem 0 0;
+        padding: 0.5rem 1rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    @@media (max-width: 576px) {
+        .login-container {
+            padding: 0.5rem;
+        }
+
+        .login-card {
+            padding: 1.5rem;
+        }
+
+        .form-control-lg {
+            font-size: 1rem;
+        }
+
+        .btn-lg {
+            font-size: 1rem;
+        }
+    }
+</style>

@@ -1,0 +1,178 @@
+﻿@page "/customer-management"
+@inject CustomerService customerService
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Customer Management</h3>
+<p>Manage your customer list, including contact details and balances.</p>
+
+<div class="row">
+    <div class="col-md-7">
+        <h5>Current Customers</h5>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>City</th>
+                    <th>Balance</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (customerList == null)
+                {
+                    <tr><td colspan="5">Loading...</td></tr>
+                }
+                else
+                {
+                    @foreach (var cust in customerList)
+                    {
+                        <tr @onclick="() => SelectCustomer(cust)" style="cursor:pointer">
+                            <td>@cust.CName</td>
+                            <td>@cust.CContact</td>
+                            <td>@cust.CCity</td>
+                            <td>@cust.OutstandingBalance.ToString("0.00")</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" @onclick="() => SelectCustomer(cust)">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card shadow">
+            <div class="card-header">
+                <h5>@formTitle</h5>
+            </div>
+            <div class="card-body">
+                <EditForm Model="@editModel" OnValidSubmit="HandleSave">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="mb-2">
+                        <label class="form-label">Customer Name</label>
+                        <InputText @bind-Value="editModel.CName" class="form-control" />
+                        <ValidationMessage For="@(() => editModel.CName)" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Contact / Mobile</label>
+                        <InputText @bind-Value="editModel.CContact" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Address</label>
+                        <InputText @bind-Value="editModel.CAddress" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">City</label>
+                        <InputText @bind-Value="editModel.CCity" class="form-control" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">GST No.</label>
+                        <InputText @bind-Value="editModel.CGST" class="form-control" />
+                    </div>
+                    
+                    <hr />
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="ClearSelection">New</button>
+                    
+                    @if (editModel.Id != 0)
+                    {
+                        <button type="button" class="btn btn-danger" @onclick="HandleDelete">Delete</button>
+                    }
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Customer> customerList = new List<Customer>();
+    private CustomerEditModel editModel = new CustomerEditModel();
+    private string formTitle = "Create New Customer";
+    private int selectedCustomerId = 0;
+
+    // A helper class for form validation
+    public class CustomerEditModel
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Customer name is required.")]
+        public string CName { get; set; } = "";
+        public string? CContact { get; set; }
+        public string? CAddress { get; set; }
+        public string? CCity { get; set; }
+        public string? CGST { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        customerList = await customerService.GetCustomers();
+        StateHasChanged(); // Refresh the UI
+    }
+
+    private void SelectCustomer(Customer cust)
+    {
+        selectedCustomerId = cust.Id;
+        editModel = new CustomerEditModel
+        {
+            Id = cust.Id,
+            CName = cust.CName ?? "",
+            CContact = cust.CContact,
+            CAddress = cust.CAddress,
+            CCity = cust.CCity,
+            CGST = cust.CGST
+        };
+        formTitle = $"Edit Customer: {cust.CName}";
+    }
+
+    private void ClearSelection()
+    {
+        selectedCustomerId = 0;
+        editModel = new CustomerEditModel();
+        formTitle = "Create New Customer";
+    }
+
+    private async Task HandleSave()
+    {
+        // Convert the EditModel back to the full Customer model
+        Customer custToSave = new Customer
+        {
+            Id = selectedCustomerId,
+            CName = editModel.CName,
+            CContact = editModel.CContact,
+            CAddress = editModel.CAddress,
+            CCity = editModel.CCity,
+            CGST = editModel.CGST
+        };
+
+        if (selectedCustomerId == 0) // New Customer
+        {
+            await customerService.CreateCustomer(custToSave);
+        }
+        else // Existing Customer
+        {
+            await customerService.UpdateCustomer(custToSave);
+        }
+        
+        ClearSelection();
+        await LoadData();
+    }
+
+    private async Task HandleDelete()
+    {
+        if(selectedCustomerId == 0) return;
+        
+        await customerService.DeleteCustomer(selectedCustomerId);
+        ClearSelection();
+        await LoadData();
+    }
+}
